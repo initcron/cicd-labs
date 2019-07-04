@@ -11,6 +11,6 @@ To access that appication on your browser visit `localhost:8080`.
 Autmatically create the port mapp use `-P` insted of `-p`.
 > `docker container run -idt -P nginx`
 * `-P` -> automatically fetches the application port and mapp to localhost
-*`docker ps -n 2 ` -> it will show mapped port
+* `docker ps -n 2 ` -> it will show mapped port
 
-`example:-` we can access the application on `localhost:32769` 
+`example:-` we can access the application on `localhost:32769`
