@@ -12,7 +12,7 @@
  use docker hub image to run a container. you can use both `docker container run` and `docker run` command for runnig a container.
 
  `docker container run centos ps` or `docker run centos ps`,here we are ruuning `ps` command after launching the container.
-#### Example:-####
+#### Example:- ####
 ```
 docker container run centos uptime
 docker container run centos uname -a
