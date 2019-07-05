@@ -1,6 +1,6 @@
 # Accessing web apps with port mapping #
 ---
-Once we create the docker container for our application, for accessing that we need to mapp application port with our localhost port.
+Once we create the docker container for our application, then accessing that we need to mapp application port with our localhost port.
 > `docker container run -idt -p 8080:80 nginx`
 * `-p`-> option for port mapping
 * `8080`-> localhost port

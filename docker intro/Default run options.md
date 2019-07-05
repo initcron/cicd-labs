@@ -3,8 +3,8 @@
 Here we use default run options to run the container in the background.
 
 >`docker run -it centos bash`
-* `-i`-> used for interact with container
-* `-t`-> used for sudo terminal
+* `-i` # used for interact with container
+* `-t` # used for sudo terminal
 
 `docker run --rm -it alpine sh` it will create the container and remove the container once we stop that container.
 
