@@ -1,6 +1,6 @@
 # Analysing launch sequence #
 ___
-### Step by step process of the docker container run###
+### Step by step process of the docker container run ###
 Once we run our container below events will run in the background.
 * docker image pull
 * docker container create
