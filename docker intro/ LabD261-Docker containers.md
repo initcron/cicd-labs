@@ -121,6 +121,7 @@ Firts you need to create a volume before running a container and validate the vo
 * docker volume inspect portainer_data
 ```
  <img src="261-labguide/docker intro/images/portainer1.png"/>
+ ![](https://raw.githubusercontent.com/mohaninit/261-labguide/docker intro/images/portainer1.png)
 
  After creating the volume you just run the `docker run` command along with the volume which we are created.
  ```
