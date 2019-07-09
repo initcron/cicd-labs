@@ -101,7 +101,7 @@ you can follow the logs using `-f` option and `docker exec` allows you to run a 
  ```
  docker container run -idt -P -v nextcloud:/var/www/html nextcloud
  ```
- <img src="/home/mohan/gourav/261-labguide/docker intro/images/nextcloud1.png"/>
+ ![](./images/nextcloud1.png)
 
  Use below commands to get running container port and logs.
  ```
@@ -110,7 +110,7 @@ you can follow the logs using `-f` option and `docker exec` allows you to run a 
  * docker logs -f ac69
  ```
  `Example:` you can visit the application buy using `localhost:32770` on your browser.
- <img src="261-labguide/docker intro/images/nextcloud2.png"/>
+ ![](./images/nextcloud2.png)
 ### Portainer with advanced run option :-
 Here you will launch and practice more advanced run option by using portainer application.
 
@@ -129,8 +129,7 @@ Firts you need to create a volume before running a container and validate the vo
 Once you created your container, then access the portainer application using port 9000 on your browser.
 
  `example:- localhost:9000`
- <img src="261-labguide/docker intro/images/portainer2.png"/>
-
+![](./images/portainer2.png)
 ### Stop, remove and cleanup :-
 Here you will learn how to stop, remove and cleanup the containers which you have created.
 
