@@ -148,7 +148,7 @@ you can remove or again start the container once it stopped.
 ```
 you could remove the images which ever you want and you can also delete all the stopped containers and dangling images by using below commands.
 ```
-* docker image rm 4206`
+* docker image rm 4206
 * docker image rm 4f1 4d9 4c1 9f3
 * docker system prune
 ```
