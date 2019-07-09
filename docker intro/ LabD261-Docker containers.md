@@ -110,7 +110,7 @@ you can follow the logs using `-f` option and `docker exec` allows you to run a 
  * docker logs -f ac69
  ```
  `Example:` you can visit the application buy using `localhost:32770` on your browser.
- <img src="/home/mohan/gourav/261-labguide/docker intro/images/nextcloud2.png"/>
+ <img src="261-labguide/docker intro/images/nextcloud2.png"/>
 ### Portainer with advanced run option :-
 Here you will launch and practice more advanced run option by using portainer application.
 
@@ -120,7 +120,7 @@ Firts you need to create a volume before running a container and validate the vo
 * docker volume ls
 * docker volume inspect portainer_data
 ```
- <img src="/home/mohan/gourav/261-labguide/docker intro/images/portainer1.png"/>
+ <img src="261-labguide/docker intro/images/portainer1.png"/>
 
  After creating the volume you just run the `docker run` command along with the volume which we are created.
  ```
@@ -129,7 +129,7 @@ Firts you need to create a volume before running a container and validate the vo
 Once you created your container, then access the portainer application using port 9000 on your browser.
 
  `example:- localhost:9000`
- <img src="/home/mohan/gourav/261-labguide/docker intro/images/portainer2.png"/>
+ <img src="261-labguide/docker intro/images/portainer2.png"/>
 
 ### Stop, remove and cleanup :-
 Here you will learn how to stop, remove and cleanup the containers which you have created.
