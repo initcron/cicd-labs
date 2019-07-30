@@ -1,6 +1,6 @@
 # Lab: Getting started with docker
 ---
-In this chapter, you will learn how to create docker containers using docker images, analysing and troubleshooting those containers by using docker commands. you will also learn how to launch application by using docker containers and advanced docker management tool portainer which help us to manage our docker resources using UI.
+In this lab, you will learn how to create docker containers using docker images, analysing and troubleshooting those containers by using docker commands. you will also learn how to launch application by using docker containers and advanced docker management tool portainer which help us to manage our docker resources using UI.
 
 ###  Launching your first container :-
 check your docker version after installation using below command.

@@ -1,8 +1,8 @@
 # Setting up Continuous Integration with Jenkins
-Here you will learn how to run jenkins by using docker container and configure it, launching jobs, adding unit test and packaging Jobs. configuring build triggers to auto launch jenkins, defining downstream/upstream and a pipeline view. how to integrate github with jenkins to setup jenkins, configuring job status with commit messages and setting up a CI pipeline for a NodeJS app.
+In this lab, you will learn how to run jenkins by using docker container and configure it, launching jobs, adding unit test and packaging Jobs. configuring build triggers to auto launch jenkins, defining downstream/upstream and a pipeline view. how to integrate github with jenkins to setup jenkins, configuring job status with commit messages and setting up a CI pipeline for a NodeJS app.
 
 ### Setup jenkins with docker :-
-In this Lab you are going learn how to setup jenkins using docker. prerequisite for this you need docker installed locally.
+Here you are going learn, how to setup jenkins using docker. prerequisite for this you need docker installed locally.
 
 You could run a jenkins container on your docker host by using official jenkins image with the version `2.178-Slim`. Use below command to run a jenkins container,
 ```
@@ -20,10 +20,9 @@ Next step , choose install suggested plugins to configure automatically or else 
 Once plugin got installed, you will get create first admin user page, fill your detail and continue the procedure to finish the configuration and finally you will get jenkins page where you could create jobs.
 ![](./images/jenkins3.png)
 ### Jenkins configurations walkthrough :-
-Previously you configured j :- here you could mention jenkins, now you are going to know about what are all the user and job related configurations.
+Previously you configured jenkins using Docker, now you are going to know about what are all the user and job related configurations in jenkins.
 
-You could use new items for creating jobs, view build history,
-create views for jobs, manage jenkins, etc.
+You could use new items for creating jobs, view build history, create views for jobs, manage jenkins, etc.
 
 Manage Jenkins is the most important one in jenkins, there you could manage plugins, configure sytem, global tool configuration , configure credentials and more.
 
@@ -33,7 +32,7 @@ Manage Jenkins is the most important one in jenkins, there you could manage plug
 * Manage pluins :- here you could search and install or update plugins whatever you need to build or compile the jobs.
 
 ### Launching your first jenkins job :-
-In this lab, you will learn how to create your first jenkins job, run it and check the status of the job.
+Here you will learn, how to create your first jenkins job, run it and check the status of the job.
 
 You could create jenkins job for build your application. You need application for this job, so visit github [example-voting-app](https://github.com/lfs261/example-voting-app) and fork the repository for creating your job.
 
@@ -99,7 +98,7 @@ job copy `worker-test` or `worker- build` job.
 * Save the changes and build the job. Once build succesful, check your workspace to find out your artifacts.
 
 ###  Configuring build triggers to auto launch  jenkins jobs :-
-In this lab, you will learn how to trigger the job automatically using schedule or remote script.
+Here you will learn, how to trigger the job automatically using schedule or remote script.
 
 You could use anything under build triggers for automatic build, but now you are going to use `poll scm` under build triggers.
 * goto your `worker-build` job configuration page and choose `poll SCM` under build triggers. In that poll scm mention below time interval for periodically poll the git repository, if there is any change in the git repository it will build your job.
@@ -127,7 +126,7 @@ curl http://admin:yourapitoken@localhost:8080/job/instavote/job/worker-build/bui
 This is how you could automatically trigger the builds.
 
 ### Defining downstreams/upstreams and a Pipeline view :-
-In this lab, you will learn how to links your job and run it in a sequence, setup pipeline view. Before that you need to know about upstreams & downstreams.
+Here you will learn, how to links your job and run it in a sequence, setup pipeline view. Before that you need to know about upstreams & downstreams.
 
 Follow the below steps to setup upstream and downstream :-
 * goto your `woker-build job` configure page, add `projects to build`  in `post build actions`.
@@ -150,7 +149,7 @@ Now you are going to setup pipeline view for this build jobs, for that you need 
 This is how you could setup pipeline view of your project or jobs which you have.
 
 ### Integrating github with jenkins to setup webhook based triggers :-
-In this lab, you will learn how to integrate github with jenkins and trigger build automatically using github webhooks.
+Here you will learn, how to integrate github with jenkins and trigger build automatically using github webhooks.
 
 You could trigger your job when there is a commit changes in master branch. webhook will be trigger your job from github side and even you could send status back to github, so you don't need polling.
 
@@ -185,7 +184,7 @@ Follow the below steps to add jenkins status badge to github :-
 
 This how you could add jenkins status badge to github.
 ### Configuring  job status with commit messages :-
-In this lab, you will learn how to configure build & test job status with github commit messages.
+Here you will learn, how to configure build & test job status with github commit messages.
 
 Follow the below steps to configure job status :-
   * Goto your `worker-build` job configuration page, under post build action choose `Set github communication status (universal)` and make status result as `One of default messages and statuses`, save the changes.
