@@ -52,9 +52,9 @@ Where,
 Next go ahead and try creating a few more containers with different commands as,
 
 ```
-* docker container run centos uptime
-* docker container run centos uname -a
-* docker container run centos free
+docker container run centos uptime
+docker container run centos uname -a
+docker container run centos free
 ```
 
 you could check the events in the window where you have started running  `docker system events` command earlier. It shows whats happening on docker daemon side.
@@ -66,9 +66,9 @@ you could check the events in the window where you have started running  `docker
 you can check your last run container using following commands,
 
 ```
-* docker ps -l
-* docker ps -n 2
-* docker ps -a
+docker ps -l
+docker ps -n 2
+docker ps -a
 ```
 
 where
@@ -195,64 +195,51 @@ you can follow the logs using `-f` option and `docker exec` allows you to run a 
 You learnt about **logs** and **exec** commands which are esssential for debugging a container.
 
 
-### Exercise:  Setting up nextcloud
 
- Previously you have some understanding about running application using containers, here you will setup nextcloud application using official image with creating volume and mounting inside the container.
 
- You just follow the below procedure to Setting up nextcloud.
- ```
- docker container run -idt -P -v nextcloud:/var/www/html nextcloud
- ```
- ![](./images/nextcloud1.png)
 
- Use below commands to get running container port and logs.
- ```
- * docker ps
- * docker logs ac69
- * docker logs -f ac69
- ```
- `Example:` you can visit the application buy using `localhost:32770` on your browser.
- ![](./images/nextcloud2.png)
 
-### Portainer with advanced run option
-Here you will launch and practice more advanced run option by using portainer application.
+## Exercises
 
-Firts you need to create a volume before running a container and validate the volume by using below commands.
-```
-* docker volume create portainer_data
-* docker volume ls
-* docker volume inspect portainer_data
-```
-![](./images/portainer1.png)
+With the knowledge that you have gained so far, you have been tasked with setting up the following two apps with docker
 
- After creating the volume you just run the `docker run` command along with the volume which we are created.
- ```
- docker run -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
- ```
-Once you created your container, then access the portainer application using port 9000 on your browser.
+  * [Nextcloud](https://nextcloud.com/)
+  * [Portainer](https://www.portainer.io/)
 
- `example:- localhost:9000`
-![](./images/portainer2.png)
-### Stop, remove and cleanup :-
+
+Try launching it on your own before you proceed with the [solutions given here](solutions.md).
+
+
+
+### Stop, remove and cleanup
 Here you will learn how to stop, remove and cleanup the containers which you have created.
 
 Find your container id and stop the container before you are going to remove and you can pause and unpause the container as well.
 ```
-* docker ps
-* docker pause ac69
-* docker unpause ac69
-* docker stop b584
-* docker stop b584 84e6 e4da
+docker ps
+docker pause ac69
+docker unpause ac69
+docker stop ac69
+docker stop b584 84e6 e4da
 ```
+
+where  ac69 b584 84e6 e4da are container ids, which could vary on your system. Use the ones you see when you run `docker ps`
+
+
 you can remove or again start the container once it stopped.
+
 ```
-* docker start redis
-* docker rm -f b584
+docker start redis
+docker rm -f b584
 ```
+
 you could remove the images which ever you want and you can also delete all the stopped containers and dangling images by using below commands.
 ```
-* docker image rm 4206
-* docker image rm 4f1 4d9 4c1 9f3
-* docker system prune
+docker image rm 4206
+docker image rm 4f1 4d9 4c1 9f3
+docker system prune
 ```
+
+where, 4206 4f1 4d9 4c1 9f3 are the beginning characters of the image ids on my host.
+
 You could get all your docker system information by using `docker system info`.
