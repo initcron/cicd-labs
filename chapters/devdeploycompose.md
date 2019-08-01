@@ -1,3 +1,13 @@
+# Deploy to dev with Docker Compose 
+
+Here is what you are going to learn in this chapter,
+
+  * You would begin by learning how  docker compose could help launch a monitoring stack.
+  * Then you would understand the docker compose spec version 1
+  * Keep adding services to docker compose
+  * Refactor the compose file with version3 syntax
+  * Create a consolidated jenkins pipeline
+  * and start deploying to a integrated dev environment with docker compose  
 
 
 `file: docker-compose.yaml`
@@ -54,7 +64,7 @@ services:
 ```
 
 
-Add a deploy to dev stage to Jenkinsfile 
+Add a deploy to dev stage to Jenkinsfile
 
 ```
 

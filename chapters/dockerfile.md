@@ -1,6 +1,17 @@
 # Packaging with Docker
 
 
+In addition to helping  the process of building and testing software, docker could also provide a standard packaging format i.e. docker images.   Along with this packaging format, comes the distribution mechanism i.e.  docker image registries.   
+
+In this lab you are going to learn,
+
+  * about Docker’s standard imaging format
+  * How to test build docker images  manually
+  * Learn how to write Dockerfiles
+  * understand the automated, iterative docker image process
+  * and  add docker packaging stage to the jenkins pipeline
+
+
 
 ## Dockerizing your Applications : Building Images and Working with Registries  
 In the previous session, we have learnt about various container operations such as running containers from
