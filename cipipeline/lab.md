@@ -38,7 +38,7 @@ After installing docke, run the below commands to check the docker version.
 * which docker
 * docker version
 ```
-Run the hello wrold container inside the jenkins container to validate docker.
+Run the hello world container inside the jenkins container to validate docker.
 ```
 docker run hello-world
 ```
