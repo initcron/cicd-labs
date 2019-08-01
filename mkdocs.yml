@@ -1,6 +1,6 @@
 site_name: CI/CD Lab Guide
 pages:
-  - Home: "README.md"
+  - Home: "tests.md"
   - Lab 1 - Setting up Learning Environment: "setup.md"
   - Lab 2 - Docker for CI/CD: "dockerintromd"
   - Lab 3 - Revision Control with Git: "git.md"

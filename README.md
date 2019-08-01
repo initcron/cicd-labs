@@ -4,18 +4,18 @@
 # Lab Guide for CI/CD Course
 
 
-  * [Lab 1: Setting up Learning Environment](setup/lab.md)  
+  * [Lab 1: Setting up Learning Environment](chapter/setup.md)  
 
-  * [Lab 2: Docker for CI/CD](dockerintro/lab.md)  
+  * [Lab 2: Docker for CI/CD](chapters/dockerintro.md)  
 
-  * [Lab 3: Revision Control with Git](git/lab.md)  
+  * [Lab 3: Revision Control with Git](chapters/git.md)  
 
-  * [Lab 4: Setting up CI Pipeline with Jenkins](jenkins/lab.md)  
+  * [Lab 4: Setting up CI Pipeline with Jenkins](chapters/jenkins.md)  
 
-  * [Lab 5: Dev Workflow, Code Reviews, Pipeline as a Code](jenkinsfile/lab.md)  
+  * [Lab 5: Dev Workflow, Code Reviews, Pipeline as a Code](chapters/jenkinsfile.md)  
 
-  * [Lab 6: Using docker to simplify the CI process](dockerjenkins/lab.md)  
+  * [Lab 6: Using docker to simplify the CI process](chapters/dockerjenkins.md)  
 
-  * [Lab 7: Packaging applications with Docker](dockerfile/lab.md)  
+  * [Lab 7: Packaging applications with Docker](chapters/dockerfile.md)  
 
-  * [Lab 8: Adding Automated Tests](xxx/lab.md)  
+  * [Lab 8: Adding Automated Tests](chapters/tests.md)  
