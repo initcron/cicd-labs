@@ -19,3 +19,5 @@
   * [Lab 7: Packaging applications with Docker](chapters/dockerfile.md)  
 
   * [Lab 8: Adding Automated Tests](chapters/tests.md)  
+
+  * [Lab 9: Deploy to Dev with Compose](devdeploycompose.md)
