@@ -1,10 +1,10 @@
 site_name: CI/CD Lab Guide
 pages:
   - Home: "README.md"
-  - Lab 1 - Setting up Learning Environment: "../setup/lab.md"
-  - Lab 2 - Docker for CI/CD: "../dockerintro/lab.md"
-  - Lab 3 - Revision Control with Git: "../git/lab.md"
-  - Lab 4 - Setting up CI Pipeline with Jenkins: "../jenkins/lab.md"
+  - Lab 1 - Setting up Learning Environment: "setup.md"
+  - Lab 2 - Docker for CI/CD: "dockerintromd"
+  - Lab 3 - Revision Control with Git: "git.md"
+  - Lab 4 - Setting up CI Pipeline with Jenkins: "jenkins.md"
 docs_dir: chapters
 theme: readthedocs
 plugins:
