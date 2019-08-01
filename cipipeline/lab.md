@@ -1,4 +1,5 @@
 # Using Docker to Simplify CI Pipelines :-
+
 In this Lab, you will learn how to prepare jenkins for docker agent based build, refactoring maven jobs with docker agent and how to build nodejs app with docker. How to write jenkinsfile for python based vote app and how to troubleshoot docker agent jobs, pull requests, code review and merge to master branch and you have assignment as well.
 
 ### Preparing jenkins for docker agent based builds :-

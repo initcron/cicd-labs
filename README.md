@@ -12,10 +12,10 @@
 
   * [Lab 4: Setting up CI Pipeline with Jenkins](jenkins/lab.md)  
 
-  * [Lab x: Dev Workflow, Code Reviews, Pipeline as a Code](jenkinsfile/lab.md)  
+  * [Lab 5: Dev Workflow, Code Reviews, Pipeline as a Code](jenkinsfile/lab.md)  
 
-  * [Lab x: xx](xxx/lab.md)  
+  * [Lab 6: Using docker to simplify the CI process](dockerjenkins/lab.md)  
 
-  * [Lab x: xx](xxx/lab.md)  
+  * [Lab 7: Packaging applications with Docker](dockerfile/lab.md)  
 
-  * [Lab x: xx](xxx/lab.md)  
+  * [Lab 8: Adding Automated Tests](xxx/lab.md)  

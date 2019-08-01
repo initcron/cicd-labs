@@ -1,6 +1,15 @@
 # Pipeline as a Code with Jenkinsfile
 ---
-In this lab you will learn, how to enforce branch policies, code review with pull requests. Understanding declarative pipeline syntax and create a sample declarative pipeline, then write jenkins file for java application and launch multibranch jenkins pipeline. You will learn how to configure conditional stage execution, integrating slack with jenkins and send notification from pipeline and you have some assignment as well.
+
+Here is what you are going to learn in this lab,
+
+  * You would begin by defining branch protection rules on GitHub
+  * Then you would learn about enforcing code reviews via raising pull requests
+  * You would then start learning how to write pipeline as a code
+  * Learn the syntax to write declarative Jenkins pipeline
+  * Create Jenkinsfiles for a Java and NodeJS applications
+  * And finally launch  it with multi branch pipelines  on Jenkins
+
 
 ### Enforcing branch policies
 
