@@ -22,6 +22,9 @@ Lets create branch policies based on trunk based development workflow. With trun
   * Merges to master require pull request
   * Further policies could be added to enforce the code review as well as integrate with jenkins ci to run per branch pipeline
 
+This is how it should look like,
+![branch policy](images/br-policy.png)
+
 Goto settings form your github repository and add rule form branch protection rules. In the rule add require status check to pass before merging, include administrators and create the rule with your password.
 
 you could see branch rule under branches once the rule created.
