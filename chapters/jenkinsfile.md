@@ -235,7 +235,8 @@ Once you created Jenkinsfile, commit the file and push the changes to `feature/w
 ```
 Now the pull request is approved and merge with your master branch.
 
-### Launching a multi branch jenkins pipeline :-
+### Launching a multi branch jenkins pipeline
+
 Here you are going to learn, how to create & execute multi branch pipeline and how to use this with ci pipeline for every branch that you have in github repository.
 
 Follow the below steps to create and execute multibranch pipeline.
@@ -360,6 +361,7 @@ Now you learned how to create & run multibranch pipeline and you also learned ho
 
 
 ### Configuring conditional execution of stages
+
 Here you will learn, how to execute pipeline stages conditionally. This will helpful when you want to run some feature steps in particular condition.
 
 Now you are going to use conditional statement , when your branch is `master` and whenever the changes in your `worker`, that time only package job should run and others or should run whenever changes in `worker`. Use the below code for your Jenkisfile to achive the successful build.   
@@ -439,7 +441,10 @@ git push origin feature/workerpipe -f
 ```
 Now you have learned how to use conditional pipeline stages.
 
-### Integrating slack with jenkins :-
+### Integrating slack with jenkins [optional]
+
+`this is an optional section. Refer to it only if you wish to integrate with slack for notifications`
+
 Here you will learn, how to integrate slack with jenkins and this will helpful to send notifications related to your build from jenkins to slack channel.
 
 Prerequsite for this, you need a slack account and you should be the slack channel administrator.
@@ -460,7 +465,8 @@ Once you complete the configuration, save it and build the job. Now you could ab
 
 This is how you could integrate slack with jenkins and send notifications to slack channel.
 
-### Sending notifications from a pipeline job :-
+### Sending notifications from a pipeline job
+
 Here you will learn how to send slack notification from pipeline job.
 
 Already you have a working pipeline for worker application, now you are going to add some failiure & success postbuild actions in jenkinsfile, this will send notifications to your slack channel. refer the below code to make the changes in your Jenkinsfile .
@@ -540,7 +546,7 @@ Now your feature is completed, so goto your main github account and create a new
 
 This is how you will send slack notification from pipeline.
 
-### Assignment jenkins for result:-
+## Assignment: Writing  Jenkinsfile for result app
 
 You have been tasked to write declarative pipeline for result application.
 
