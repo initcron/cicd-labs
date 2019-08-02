@@ -555,3 +555,6 @@ You have been tasked to write declarative pipeline for result application.
   * You could refer the  workflow below
 
 ![](./images/jenkinsfile8.png)
+
+
+[You could reference this page to observer the solution.](../jenkinsfile/solutions.md)
