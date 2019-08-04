@@ -20,7 +20,7 @@ Use your docker hub credentials to log in and download the docker from docker hu
 Download the dockerdesktop installer form docker hub and move the docker to applications directory on mac os.
 ![](./images/setup2.png)
 
-Once the docker daemon start, launch a terminal and  validate the docker by running the below commands on your terminal.
+Once the docker daemon start, launch a terminal and  validate the docker by running the following commands on your terminal.
 
 ```
 * docker version

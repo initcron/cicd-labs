@@ -1,4 +1,4 @@
-# Deploy to dev with Docker Compose 
+# Deploy to dev with Docker Compose
 
 Here is what you are going to learn in this chapter,
 

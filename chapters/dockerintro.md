@@ -103,7 +103,7 @@ where following are the fields,
   * tag: latest
 
 
-You could use below commands to list your images from your local machine and pull the image from docker-hub. You could even examine the layers of an image  with *history* command.
+You could use following commands to list your images from your local machine and pull the image from docker-hub. You could even examine the layers of an image  with *history* command.
 
 
 ```

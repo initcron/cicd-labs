@@ -29,7 +29,7 @@ Goto settings form your github repository and add rule form branch protection ru
 
 you could see branch rule under branches once the rule created.
 
-You need to clone the repository to your machine if you are not cloned before. Once you have the cloned repository in your local, made some changes in your `README.md` file and check and commit those changes once it done by using below commands.
+You need to clone the repository to your machine if you are not cloned before. Once you have the cloned repository in your local, made some changes in your `README.md` file and check and commit those changes once it done by using following commands.
 ```
 git diff
 git commit -am "test"
@@ -38,7 +38,7 @@ git push origin master
 Whenever you are trying to push some changes, it throws an error `master protected branch hook declined`, because you can't directly push to master and atleast it should be aproved by one reviewers.
 
 Now you need to reset your commit by using previous commit id.
-`replace YOURLASTCOMMITID with the actual commit id below `
+`replace YOURLASTCOMMITID with the actual commit id following `
 
 ```
 git log
@@ -52,13 +52,13 @@ Once you done hard reset, it will back to your previous commit.
 
 Here you will learn how to make changes in master branch by using code reviews and pull requests. Previously you are trying to push changes to master branch after creating branch protection policy, but now your are going to do it in right way.
 
-Create a branch `readme` using  command below,
+Create a branch `readme` using  command following,
 ```
 git checkout -b readme
 ```
 Once you create branch `readme` using git checkout, it will create and switch the branch from master to readme.
 
-you make some changes in `README.md` file  and commit those changes. Once you commit the changes, now push that to readme branch using below commands.  
+you make some changes in `README.md` file  and commit those changes. Once you commit the changes, now push that to readme branch using following commands.  
 ```
 git status
 git commit -am "added application info"
@@ -101,7 +101,7 @@ goto  `pipeline-01` configuration page, in pipeline step choose `hello-world` sc
 
 Now you are going to write declarative pipeline, visit [declarative pipeline](https://jenkins.io/doc/book/pipeline/syntax/) for your reference.
 
-Use the below code to configure your pipeline job.
+Use the following code to configure your pipeline job.
 ```
 pipeline {
   agent any
@@ -134,7 +134,7 @@ pipeline {
 After configure pipeline job, build the job and view the stage view to know how the pipeline works and how much time it will take to complete the job.
 ![](./images/jenkinsfile3.png)
 
-Now add some aditional step like `sleep time` with the same job, refer below code for the configuration. Save the configuration and build the job for the result.
+Now add some aditional step like `sleep time` with the same job, refer following code for the configuration. Save the configuration and build the job for the result.
 ```
 pipeline {
   agent any
@@ -176,17 +176,17 @@ This is the sample pipeline, next you are going to setup pipeline for java appli
 
 Here your will learn how to create build pipeline for a java app and that is your worker application writen in java, which uses maven as a build tool.
 
-Create new `feature/workerpipe` branch, by using below command,
+Create new `feature/workerpipe` branch, by using following command,
 ```
 git checkout -b feature/workerpipe
 git branch
 ```
-Now you are going to write Jenkinsfile for worker application using previous sample code and follow the below steps to write Jenkinsfile.
+Now you are going to write Jenkinsfile for worker application using previous sample code and follow the following steps to write Jenkinsfile.
 
-Steps 
+Steps
 Create jenkisfile inside `worker` dir
 Here your build tool is maven, so check your maven version in your jenkins `Manage jenkins --> global configuration` page and add the maven in your jenkisfile under tools with the exact version.
-you need to add the compile step in your first stage, to run the `mvn compile` you need to provide exact path, for that use `dir` and mention your directory with the name and command that needs run the `mvn compile`. Use the below code in your jenkinsfile.
+you need to add the compile step in your first stage, to run the `mvn compile` you need to provide exact path, for that use `dir` and mention your directory with the name and command that needs run the `mvn compile`. Use the following code in your jenkinsfile.
 ```
 pipeline {
   agent any
@@ -226,7 +226,7 @@ pipeline {
   }
 }
 ```     
-Once you created Jenkinsfile, commit the file and push the changes to `feature/workerpipe`, then you just create a pull request from your master branch and apporve it by using your another account. Use the below code to push the changes to `feature/workerpipe`.
+Once you created Jenkinsfile, commit the file and push the changes to `feature/workerpipe`, then you just create a pull request from your master branch and apporve it by using your another account. Use the following code to push the changes to `feature/workerpipe`.
 ```
  git status
  git add worker/Jenkisfile
@@ -239,11 +239,11 @@ Now the pull request is approved and merge with your master branch.
 
 Here you are going to learn, how to create & execute multi branch pipeline and how to use this with ci pipeline for every branch that you have in github repository.
 
-Follow the below steps to create and execute multibranch pipeline.
+Follow the following steps to create and execute multibranch pipeline.
 
 Steps: -
 create new job `worker-pipe` in your instavote directory, choose project type as multibranch pipeline.
-In `worker-pipe` job configuration page , add display name as 'Instavote Multi branch pipeline' and under the branch sources choose `GitHub` and add your account credentials, choose our project repository as well. example image is given below, refer the image and configure it.
+In `worker-pipe` job configuration page , add display name as 'Instavote Multi branch pipeline' and under the branch sources choose `GitHub` and add your account credentials, choose our project repository as well. example image is given following, refer the image and configure it.
 ![](./images/jenkinsfile4.png)
 Under build configuration, mention your Jenkinsfile path as `worker/Jenkisfile`.
 Add periodical checks interval as `5 minutes` under Scan multibranch pipeline triggers and save the configuration, it will automatically scan your repository. Whenever it detects new branch under repository, it  scans and runs the pipeline build automatically.
@@ -364,7 +364,7 @@ Now you learned how to create & run multibranch pipeline and you also learned ho
 
 Here you will learn, how to execute pipeline stages conditionally. This will helpful when you want to run some feature steps in particular condition.
 
-Now you are going to use conditional statement , when your branch is `master` and whenever the changes in your `worker`, that time only package job should run and others or should run whenever changes in `worker`. Use the below code for your Jenkisfile to achive the successful build.   
+Now you are going to use conditional statement , when your branch is `master` and whenever the changes in your `worker`, that time only package job should run and others or should run whenever changes in `worker`. Use the following code for your Jenkisfile to achive the successful build.   
 ```
 pipeline {
   agent any
@@ -449,7 +449,7 @@ Here you will learn, how to integrate slack with jenkins and this will helpful t
 
 Prerequsite for this, you need a slack account and you should be the slack channel administrator.
 
-Follow the below steps to complete this setup.
+Follow the following steps to complete this setup.
 steps
 create slack account and create a channel with the name of `instavote-cd`.
 ![](./images/jenkinsfile6.png)
@@ -469,7 +469,7 @@ This is how you could integrate slack with jenkins and send notifications to sla
 
 Here you will learn how to send slack notification from pipeline job.
 
-Already you have a working pipeline for worker application, now you are going to add some failiure & success postbuild actions in jenkinsfile, this will send notifications to your slack channel. refer the below code to make the changes in your Jenkinsfile .
+Already you have a working pipeline for worker application, now you are going to add some failiure & success postbuild actions in jenkinsfile, this will send notifications to your slack channel. refer the following code to make the changes in your Jenkinsfile .
 ```
 pipeline {
   agent any
@@ -552,7 +552,7 @@ You have been tasked to write declarative pipeline for result application.
 
   * Two stages, build and test
   * Stages should run conditinoally only when there is a change to **result** subdir
-  * You could refer the  workflow below
+  * You could refer the  workflow following
 
 ![](./images/jenkinsfile8.png)
 

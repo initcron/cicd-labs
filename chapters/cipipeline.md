@@ -6,7 +6,7 @@ In this Lab, you will learn how to prepare jenkins for docker agent based build,
 
 Here you will learn, how to prepare your jenkins server for docker based build, refer [docker-with-pipeline](https://jenkins.io/doc/book/pipeline/docker/) document.
 
-Create `docker-pipe-01` pipeline job in your jenkins. In configuration page, mention the below test code in jenkins script and save the configuration and build it.
+Create `docker-pipe-01` pipeline job in your jenkins. In configuration page, mention the following test code in jenkins script and save the configuration and build it.
 ```
 pipeline {
     agent {
@@ -21,7 +21,7 @@ pipeline {
     }
 }
 ```   
-If you run the build, it shows build will be failed because docker is not installed on your jenkins container, so you need to install docker inside the jenkis container and use the below command to install docker inside jenkins container.
+If you run the build, it shows build will be failed because docker is not installed on your jenkins container, so you need to install docker inside the jenkis container and use the following command to install docker inside jenkins container.
 ```
 * docker ps
 * docker exec -u root -it jenkins bash
@@ -35,7 +35,7 @@ If you run the build, it shows build will be failed because docker is not instal
 ```
 Refer the docker install documentation for  [docker-install](https://docs.docker.com/install/linux/docker-ce/debian/) debian.
 
-After installing docke, run the below commands to check the docker version.
+After installing docke, run the following commands to check the docker version.
 ```
 * which docker
 * docker version
@@ -44,12 +44,12 @@ Run the hello world container inside the jenkins container to validate docker.
 ```
 docker run hello-world
 ```
-Now run the build, agin you will get permission denied error, because jenkins user not a part of docker group. use below command inside jenkins container to add jenkins user into docker group and validate.
+Now run the build, agin you will get permission denied error, because jenkins user not a part of docker group. use following command inside jenkins container to add jenkins user into docker group and validate.
 ```
 * usermod -a -G docker jenkins
 * docker ps
 ```
-After adding jenkins user to docker group, exit from jenkins container and restart the container by using below command.
+After adding jenkins user to docker group, exit from jenkins container and restart the container by using following command.
 ```
 docker restart jenkins
 ```

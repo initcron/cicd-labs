@@ -20,7 +20,7 @@ Steps:
 Create a test pipeline to run a job with docker agent
 
 
-Create `docker-pipe-01` pipeline job in your jenkins. In configuration page, mention the below test code in jenkins script and save the configuration and build it.
+Create `docker-pipe-01` pipeline job in your jenkins. In configuration page, mention the following test code in jenkins script and save the configuration and build it.
 ```
 pipeline {
     agent {
