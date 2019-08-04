@@ -90,7 +90,7 @@ You could follow the following steps to configure maven build job.
 ![](./images/jenkins8.png)
 
 
-  * Now you need to install `Maven integration` plugin.  Goto `Manage Jenkins => Manage Plugins =>  Available`,search for **Maven Integration** plugin and install it without restart.
+  * Install `Maven integration` plugin.  Goto `Manage Jenkins => Manage Plugins =>  Available`,search for **Maven Integration** plugin and install it without restart.
 ![](./images/jenkins7.png)
 
   * Create `instavote` folder for your project which serves as a namespace. Do so by creating a new job with type **folder** with name *instavote*
@@ -220,7 +220,7 @@ You have just completed creating a pipeline for a java project.
 
 Here you will learn, how to integrate github with jenkins and trigger build automatically using github webhooks.
 
-### Setting up build triggers using Github webbook
+### Setting up build triggers using Github webbooks
 
 You could trigger your job when there is a commit changes in master branch. webhook will be trigger your job from github side and even you could send status back to github, so you don't need polling.
 
@@ -229,16 +229,16 @@ Follow these steps to set up the webhook
 * To setup a  github token, go to github's  user page and select `settings -> choose developer settings -> select personal access token`. In the personal access token page select `generate new token`, add a note  and generate it. once you generate your token save it somewhere, because  you can't view it again.
 ![](./images/jenkins20.png)
 
-* Now goto jenkins page, `manage jenkins -> configure system`, choose github to add github server. provide name of your github account and add your credentials like following image,
+* Now go to jenkins page, `manage jenkins -> configure system`, choose github to add github server. provide name of your github account and add your credentials like following image,
 ![](./images/jenkins21.png)
 here secret is your github secret id and you need to provide your id description, save it.
 
-* Now choose credentials as `secret token github` and check the manage hooks. save the configuration once you complete .
+* Choose credentials as `secret token github` and check the manage hooks. save the configuration once you complete .
 ![](./images/jenkins22.png)
 
-* Go to your `worker-build` configure page, choose `github project` and provide your repository url over there. Remove poll scm and choose github hook trigger for gitscm polling, save the changes.
+* Go to your `worker-build` configure page, choose `github project` and provide  repository url . Remove poll scm and choose github hook trigger for gitscm polling, save the changes.
 
-* Again go to your github repository and choose `settings -> webhooks`, add payload url and content type as application/json, save it(refer example image given following).
+* Again go to  github repository and choose `settings -> webhooks`, add payload url and content type as application/json, save it(refer example image given following).
 ![](./images/jenkins23.png)
 
 * Now go to git repository, add some file in your repository and commit the changes.
