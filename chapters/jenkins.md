@@ -1,7 +1,16 @@
 # Setting up Continuous Integration with Jenkins
-In this lab, you will learn how to run jenkins by using docker container and configure it, launching jobs, adding unit test and packaging Jobs. configuring build triggers to auto launch jenkins, defining downstream/upstream and a pipeline view. how to integrate github with jenkins to setup jenkins, configuring job status with commit messages and setting up a CI pipeline for a NodeJS app.
 
-### Setup jenkins with docker :-
+Following are the learning objectives with this lab
+
+  * you will begin by setting up Jenkins using docker
+  * take a walkthrough of Jenkins web interface and essential configurations
+  * start creating freestyle and maven jobs
+  * integrate with tools such as nodeJS  and maven
+  * integrate with GitHub and setup build triggers  and.
+  * setup a pipelines which run  automated builds  and unit tests
+
+
+### Setup jenkins with docker 
 Here you are going learn, how to setup jenkins using docker. prerequisite for this you need docker installed locally.
 
 You could run a jenkins container on your docker host by using official jenkins image with the version `2.178-Slim`. Use below command to run a jenkins container,
@@ -19,19 +28,19 @@ Next step , choose install suggested plugins to configure automatically or else 
 
 Once plugin got installed, you will get create first admin user page, fill your detail and continue the procedure to finish the configuration and finally you will get jenkins page where you could create jobs.
 ![](./images/jenkins3.png)
-### Jenkins configurations walkthrough :-
+### Jenkins configurations walkthrough 
 Previously you configured jenkins using Docker, now you are going to know about what are all the user and job related configurations in jenkins.
 
 You could use new items for creating jobs, view build history, create views for jobs, manage jenkins, etc.
 
 Manage Jenkins is the most important one in jenkins, there you could manage plugins, configure sytem, global tool configuration , configure credentials and more.
 
-* configure system :- here you could mentions number of executors, labels, email notifications, global properties and etc
-* Configure Global Security :- here you could mention authentication and authorization properties,  CSRF protection and etc,
-* Global Tool Configuration :- here you could define tools whatever you use to bulid or compile jobs such as docker, Nodejs, Maven, Git, JDk, etc.
-* Manage pluins :- here you could search and install or update plugins whatever you need to build or compile the jobs.
+* configure system  here you could mentions number of executors, labels, email notifications, global properties and etc
+* Configure Global Security  here you could mention authentication and authorization properties,  CSRF protection and etc,
+* Global Tool Configuration  here you could define tools whatever you use to bulid or compile jobs such as docker, Nodejs, Maven, Git, JDk, etc.
+* Manage pluins  here you could search and install or update plugins whatever you need to build or compile the jobs.
 
-### Launching your first jenkins job :-
+### Launching your first jenkins job 
 Here you will learn, how to create your first jenkins job, run it and check the status of the job.
 
 You could create jenkins job for build your application. You need application for this job, so visit github [example-voting-app](https://github.com/lfs261/example-voting-app) and fork the repository for creating your job.
@@ -39,7 +48,7 @@ You could create jenkins job for build your application. You need application fo
 Once you forked the repository, goto jenkins dashboard and click create new Jobs. You could create any type of job like freestyle, pipeline, multibranch pipeline, etc.
 
 Now you are going to create a `freestyle` job with the name of `job-01` and click ok to configure your job. You will get job configuration page there you could configure your job.
-Steps :-
+Steps 
 * Goto `job-01` cofiguration page, add description of your job.
 * Under source code management choose git and provide your project repository url. If it a private repository you need to provide password for that, but now it is a public repository, so no need to worry about password.
 ![](./images/jenkins4.png)
@@ -56,11 +65,11 @@ Steps :-
 * if your job is succesful it will show on blue, if it's fail you could see red over there.
 * you could add some commands or shell script you want to run and save it, again build your job to get result.
 
-### Configuring a maven build job :-
+### Configuring a maven build job 
 Previous lab you have created simple job-01 and tested, now you are going to learn how to configure jenkins to build maven based application, use maven integration plugin and compile the worker application.
 
 You could follow the below steps to configure maven build job.
-Steps :-
+Steps 
 * first you need to install `Maven integration` plugin, for that goto `manage jenkins -> Available`,search maven integration plugin and install with out restart.
 ![](./images/jenkins7.png)
 * You need to create `instavote` folder for your project, once you create folder it is easy to create all your service jobs separately and run.
@@ -74,12 +83,12 @@ Steps :-
 * save the job and build, the result job will be failed because you are not provided exact path of pom.xml, so provide the exact path in build step and save it, again run your build.
 ![](./images/jenkins10.png)
 Finally you have succesfully build maven job.
-### Adding unit test and packaging jobs :-
+### Adding unit test and packaging jobs 
 Previous lab you build maven job, now you will learn how to test and package the application.
 
 You need to create one more job on your same folder and name it as `worker-test`, while creating `worker-test` copy `worker-build` job. Follow below steps to complete the configuration.
 
-Steps :-
+Steps 
 
 * In `worker-test` job , change your description as `test worker java app`. Source code management,repository is same .
 * under build step, change the goals and option as `clean test` and remaining will be same, so save the job and build.
@@ -97,7 +106,7 @@ job copy `worker-test` or `worker- build` job.
 ![](./images/jenkins13.png)
 * Save the changes and build the job. Once build succesful, check your workspace to find out your artifacts.
 
-###  Configuring build triggers to auto launch  jenkins jobs :-
+###  Configuring build triggers to auto launch  jenkins jobs 
 Here you will learn, how to trigger the job automatically using schedule or remote script.
 
 You could use anything under build triggers for automatic build, but now you are going to use `poll scm` under build triggers.
@@ -111,7 +120,7 @@ H/2 * * * *
 
 Now you are going to use `Trigger builds remotely` in build trigger. provide your authentication token randomly and save it. Use the below example to trigger the build using browser.
 ![](./images/jenkins15.png)
-Example url :-
+Example url 
 ```
 localhost:8080/job/instavote/job/worker-build/build?token=yourauthenticationtoken
 ```
@@ -125,10 +134,10 @@ curl http://admin:yourapitoken@localhost:8080/job/instavote/job/worker-build/bui
 ```
 This is how you could automatically trigger the builds.
 
-### Defining downstreams/upstreams and a Pipeline view :-
+### Defining downstreams/upstreams and a Pipeline view 
 Here you will learn, how to links your job and run it in a sequence, setup pipeline view. Before that you need to know about upstreams & downstreams.
 
-Follow the below steps to setup upstream and downstream :-
+Follow the below steps to setup upstream and downstream 
 * goto your `woker-build job` configure page, add `projects to build`  in `post build actions`.
 * provide `worker-test` job in projects to build and save the job configuration.
 ![](./images/jenkins17.png)
@@ -148,12 +157,12 @@ Now you are going to setup pipeline view for this build jobs, for that you need 
 
 This is how you could setup pipeline view of your project or jobs which you have.
 
-### Integrating github with jenkins to setup webhook based triggers :-
+### Integrating github with jenkins to setup webhook based triggers 
 Here you will learn, how to integrate github with jenkins and trigger build automatically using github webhooks.
 
 You could trigger your job when there is a commit changes in master branch. webhook will be trigger your job from github side and even you could send status back to github, so you don't need polling.
 
-Follow the below steps to setting up the webhook :-
+Follow the below steps to setting up the webhook 
 * first you need github tocken, so goto github user page select `settings -> choose developer settings -> select personal access tocken`. In the personal access tocken page select `generate new tocken`, mention your note and generate it. once you generate your tocken save it anywhere, because  you can't view it again.
 ![](./images/jenkins20.png)
 * Now goto jenkins page, `manage jenkins -> configure system`, choose github to add github server. provide name of your github account and add your credentials like below image,
@@ -169,12 +178,12 @@ here secret is your github secret id and you need to provide your id description
 
 This is how you could integrate github with jenkins.
 
-### Adding jenkins status badges to github :-
+### Adding jenkins status badges to github 
 In this lab, you are going to setup  two way communication. you could send the status of the build to the github and show the status right from the repository.
 
 You need to install `Embeddable Build Status` plugin from `manage jenkins -> manage plugin -> Available`. Once installation done, you could see Embeddable build status on your every job page.
 
-Follow the below steps to add jenkins status badge to github :-
+Follow the below steps to add jenkins status badge to github 
 * Goto your `worker-build` job page, there select embeddable build status. In that embeddable status page, copy `markdown unprotected link` under `links` and paste it on your github repository README.md file which you have created last lab and commit the changes.   
 * Once you make commit changes, you could see `build status  passing` on your same README.md file and if you see jenkins job, it will automatically triggers the build which you have created.
 ![](./images/jenkins24.png)
@@ -183,10 +192,10 @@ Follow the below steps to add jenkins status badge to github :-
 * Correct your `worker-build` and add the embeddable build status `markdown unprotect link` of worker-test & worker-package to your github repository README.md file and test it by your self.
 
 This how you could add jenkins status badge to github.
-### Configuring  job status with commit messages :-
+### Configuring  job status with commit messages 
 Here you will learn, how to configure build & test job status with github commit messages.
 
-Follow the below steps to configure job status :-
+Follow the below steps to configure job status 
   * Goto your `worker-build` job configuration page, under post build action choose `Set github communication status (universal)` and make status result as `One of default messages and statuses`, save the changes.
   ![](./images/jenkins25.png)
   * Copy your `github project url` form worker-build and paste it on `worker-test` and add the post build action `Set github communication status(universal)` for `worker-test` as well. refer previous step to add post build action.
@@ -210,7 +219,7 @@ Follow the below steps to configure job status :-
 
 This is how you could configure job status to git commit message.
 
-### Assignment - Create a pipeline for nodejs app :-
+### Assignment - Create a pipeline for nodejs app 
 Here you need to create pipeline for result application and use build tool as npm.
 
 Create tow jobs, first one`result-build` job will run npm install after git chekin with downstream of second job.`result-test`is second job, it will run npm test. These two will be trigger automatically via webhook.

@@ -36,7 +36,7 @@ pipeline {
 }
 
 ```   
-Run the job, and check if that worked? If not, proceed with the next section to setup docker. 
+Run the job, and check if that worked? If not, proceed with the next section to setup docker.
 
 ### Install docker inside jenkins container
 
@@ -71,7 +71,7 @@ add-apt-repository \
 
 apt-get update
 
-apt-get install docker-ce docker-ce-cli containerd.io
+apt-get install -yq  docker-ce docker-ce-cli containerd.io
 
 usermod -a -G docker jenkins
 

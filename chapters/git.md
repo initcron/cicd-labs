@@ -1,5 +1,18 @@
 # Revision Control with Git
-In this lab, you will learn how to configure git and the complete work flow of git like, three trees of git and how to simplyfy development by using branch based development. you will also learn merging to master branch,collaborating and syncing changes with remotes.This will help you to get good understanding about revision control.
+
+In this lab, you will learn
+
+
+  * How to configure a git client,
+  * create and work with repositories
+  * basics of revision control operations
+  * branching and merging
+  * working with remotes  
+  * resolving conflicts   ( and also )
+  * leveraging docker for local development
+
+
+
 ### Configuring git client :-
 Before you are start revision control, you need to configure git.There are three different places you can configure git, that are explained here and you just follow below method to configure git.
 

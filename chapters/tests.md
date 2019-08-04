@@ -58,7 +58,7 @@ stage('Sonarqube') {
 STEPS:
 
   * vote/integration_test.sh
-  * run as part of vote pipeline 
+  * run as part of vote pipeline
 
 ```
 stage('vote integration'){

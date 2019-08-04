@@ -183,7 +183,7 @@ git branch
 ```
 Now you are going to write Jenkinsfile for worker application using previous sample code and follow the below steps to write Jenkinsfile.
 
-Steps :-
+Steps 
 Create jenkisfile inside `worker` dir
 Here your build tool is maven, so check your maven version in your jenkins `Manage jenkins --> global configuration` page and add the maven in your jenkisfile under tools with the exact version.
 you need to add the compile step in your first stage, to run the `mvn compile` you need to provide exact path, for that use `dir` and mention your directory with the name and command that needs run the `mvn compile`. Use the below code in your jenkinsfile.
@@ -450,7 +450,7 @@ Here you will learn, how to integrate slack with jenkins and this will helpful t
 Prerequsite for this, you need a slack account and you should be the slack channel administrator.
 
 Follow the below steps to complete this setup.
-steps:-
+steps
 create slack account and create a channel with the name of `instavote-cd`.
 ![](./images/jenkinsfile6.png)
 After creating channel, goto `administrator -> manage apps`. It will open browser,there search `Jenkins CI` and select configure. In this configure page you need to choose your ` instavote-cd` and add jenkins integration, it will show step by step process to setup jenkins configuration.
