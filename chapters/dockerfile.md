@@ -9,18 +9,13 @@ In this lab you are going to learn,
   * How to test build docker images  manually
   * Learn how to write Dockerfiles
   * understand the automated, iterative docker image process
-  * and  add docker packaging stage to the jenkins pipeline
+  * add docker packaging stage to the jenkins pipeline
+  * create per stage agent configurations in Jenkinsfile
 
 
+##  Registering with the DockerHub   
 
-## Dockerizing your Applications : Building Images and Working with Registries  
-In the previous session, we have learnt about various container operations such as running containers from
-pre built images, port mapping, inspecting and updating containers, limiting resources etc., In this
-chapter, we are going to learn about how to build containers for your individual applications, as well
-as how to work with docker hub registry to host and distribute the images.
-
-### Lab: Registering with the DockerHub   
-Since we are going to start working with the registry, build and push images to it later, its essential to have our own account on the registry. For the purpose of this tutorial, we are going to use the hosted registry i.e. Dockerhub.
+Since you  are going to start working with the registry, build and push images to it later, its essential to have your own account on the registry. For the purpose of this tutorial, you are going to use the hosted registry i.e. Dockerhub.
 
 Steps to create Dockerhub account
 
@@ -43,127 +38,122 @@ You will be launched to Dockerhub main page. Now the registration process is com
   ![hub](images/hub3.png)
 
 ## Lab: Building Docker Images - A manual approach  
-Before we start building automated images, we are going to create a docker image by hand. We have already used the pre built image from the registry in the last session. In this session, however, we are going to create our own image with ghost installed. Since Ghost is a node.js based application, we will base our work on existing official image for **node**
+
+Before you start building automated images, you are going to create a docker image by hand. you have already used the pre built image from the registry in the last session. In this sub section, you are going to create an image with worker application installed. Since worker  is a java based application, and needs maven to build it,  you will base our work on existing official image for **maven**.
 
 
+  * Clone Repository for Java worker app
 
-#### Clone Repository for Java worker app
+  ```
+  git clone https://github.com/schoolofdevops/example-voting-app.git
+  ```
 
-```
-git clone https://github.com/schoolofdevops/example-voting-app.git
-```
+  * Launch an intermediate container to install worker app
 
-#### Launch a intermediate container to install worker app
+  Create a Container with  **schoolofdevops/voteapp-mvn:v1** image
 
-Create a Container with  **schoolofdevops/voteapp-mvn:v1** image
+  ```
+  docker run -idt --name build maven:3.6.1-jdk-8-slim sh
+  ```
 
-```
-docker run -idt --name interim schoolofdevops/voteapp-mvn  sh
+  * Copy over the Source Code
+  ```
+  cd example-voting-app/worker
+  docker container cp .  build:/app
+  ```
 
-```
-
-#### Copy over the Source Code
-
-
-```
-cd example-voting-app/worker
-docker container cp .  interim:/code
-
-```
-
-Connect to container to compile and package the code
+  * Connect to container to compile and package the code
 
 
-```
-docker exec -it interim sh
+  ```
+  docker exec -it build sh
 
-mvn package
+  mvn package
 
-```
+  ```
 
-#### Verify jarfile has been built
+  * Verify jarfile has been built
 
-```
-ls target/
+  ```
+  ls target/
 
-java -jar target/worker-jar-with-dependencies.jar
-```
+  java -jar target/worker-jar-with-dependencies.jar
+  ```
 
-[sample output]
-```
-/code # java -jar target/worker-jar-with-dependencies.jar
-Waiting for redis
-Waiting for redis
-Waiting for redis
-Waiting for redis
-Waiting for redis
-Waiting for redis
-^c
-```
-[use ^c to exit]
+  [sample output]
+  ```
+  /app # java -jar target/worker-jar-with-dependencies.jar
+  Waiting for redis
+  Waiting for redis
+  Waiting for redis
+  Waiting for redis
+  Waiting for redis
+  Waiting for redis
+  ^c
+  ```
+  [use ^c to exit]
 
-The above is the expected output. The **worker** app keeps waiting for **redis** and then later **db** in a loop.
-
-
-Move the artifact, remove source code
-```
-
-mv target/worker-jar-with-dependencies.jar /run/worker.jar
-
-rm -rf /code/*
-
-exit
-```
+  The above is the expected output. The **worker** app keeps waiting for **redis** and then later **db** in a loop.
 
 
-Commit  container to an image
+  * Move the artifact, remove source code
+  ```
 
-  * Exit from the container shell
-  * Note container ID
+  mv target/worker-jar-with-dependencies.jar /run/worker.jar
 
-Commit the container into a image  as,
+  rm -rf /app/*
 
-```
+  exit
+  ```
 
-docker container commit interim  <docker hub user id >/worker:v1
+  * Commit  container to an image
 
-```
+    * Exit from the container shell
+    * Note container ID
 
-Test before pushing  by launching container with the packaged app
+  Commit the container into a image  as,
 
-```
-  docker run --rm -it  <docker hub user id >/worker:v1 java -jar /run/worker.jar
-```
+  ```
 
-##### Push Image to registry
+  docker container commit build  <docker hub user id >/worker:v1
 
-Before you push the image, you need to be logged in to the registry, with the docker hub id created earlier. Login using the following command,
+  ```
 
-```
-docker login
-```
+  Test before pushing  by launching container with the packaged app
 
-To push the image, first list it,
+  ```
+    docker run --rm -it  <docker hub user id >/worker:v1 java -jar /run/worker.jar
+  ```
 
-```
-docker image ls
-```
+  * Push Image to registry
 
-[Sample Output]
+  Before you push the image, you need to be logged in to the registry, with the docker hub id created earlier. Login using the following command,
 
-```
-REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
-initcron/worker         v2              90cbeb6539df        18 minutes ago      194MB
-initcron/worker         v1              c0199f782489        34 minutes ago      189MB
+  ```
+  docker login
+  ```
 
-```
+  To push the image, first list it,
 
-To push the image,
+  ```
+  docker image ls
+  ```
+
+  [Sample Output]
+
+  ```
+  REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+  initcron/worker         v2              90cbeb6539df        18 minutes ago      194MB
+  initcron/worker         v1              c0199f782489        34 minutes ago      189MB
+
+  ```
+
+  To push the image,
 
 
-```
-docker push <dockrhub user id>/worker:v1
-```
+  ```
+  docker push <dockrhub user id>/worker:v1
+  ```
 
 
 ## Lab: Building Images with Dockerfile
@@ -173,7 +163,7 @@ Now, lets build the same image, this time with Dockerfile. To do this, create a 
 `file: example-voting-app/worker/Dockerfile`
 
 ```
-FROM schoolofdevops/maven
+FROM maven:3.6.1-jdk-8-slim
 
 WORKDIR /app
 
@@ -236,13 +226,14 @@ docker image push <dockrhub user id>/worker
 ```
 
 
-## Adding Docker Build Stage
+## Adding docker build stage to Jenkinsfile
 
-  * Add  username/password type credential to Jenkins with name **dockerlogin**
+  * Add  username/password type credential to Jenkins with name **dockerlogin**. Do do so, browse to `Jenkins -> Credentials -> Jenkins -> Global Credentials -> Add Credentials -> Username and password ` . Ensure you add the dockerhub login and password with id as **dockerlogin**.
+  ![](images/dockerlogin.png)
   * Refactor the Jenkinsfile for worker app by adding the following stage
 
-`file: worker/Jenkinsfile`
 
+`file: worker/Jenkinsfile`
 
 ```
 stage('docker-package'){
@@ -260,7 +251,7 @@ stage('docker-package'){
 }
 ```
 
-Refactor the worker/Jenkinsfile with per stage agents.
+You have configured the pipelines to run with docker agents. However, the job to create and publish docker image needs to be run directly from the Jenkins server as thats where you have configured docker client to run. In order to support it, you would have to refactor the worker/Jenkinsfile to support per stage agents.
 
 ```
 pipeline{
