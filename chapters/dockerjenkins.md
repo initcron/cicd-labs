@@ -2,9 +2,9 @@
 
 Objectives:
 
-  * You will learn how to prepare Jenkins environment to build with docker agent
-  * Refactor Jenkinsfile with   docker based agents
-  * Build and test  nodejs, maven and python jobs with docker
+  * You will learn how to prepare Jenkins environment to build with a docker agent
+  * Refactor Jenkinsfile with docker based agents
+  * Build and test nodejs, maven and python applications with docker
 
 
 Steps:
@@ -15,12 +15,13 @@ Steps:
   * Refactor the Jenkinsfile for worker app using the following reference
 
 
-### Test docker agent
+## Test building with Docker Agent
 
 Create a test pipeline to run a job with docker agent
 
 
-Create `docker-pipe-01` pipeline job in your jenkins. In configuration page, mention the following test code in jenkins script and save the configuration and build it.
+Create `docker-pipe-01` pipeline job in your jenkins. On the configuration page, add  the following test code in jenkins pipeline script,  save the configuration and build it.
+
 ```
 pipeline {
     agent {
@@ -38,7 +39,7 @@ pipeline {
 ```   
 Run the job, and check if that worked? If not, proceed with the next section to setup docker.
 
-### Install docker inside jenkins container
+### Install Docker inside Jenkins Container
 
 
 Exec into jenkins container as root,
@@ -77,20 +78,26 @@ usermod -a -G docker jenkins
 
 chown 777 /var/run/docker.sock
 
+
 curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 chmod +x /usr/local/bin/docker-compose
+```
 
+Finally, check if docker client is working and exit from the container.
+
+```
+docker ps
 exit
 ```
 
-Restart jenkins container
+Restart jenkins containers so that it takes effect with the new configurations,
 
 ```
 docker restart jenkins
 ```
 
-Exec into jenkins container again and validate,
+Exec into jenkins container again, this time as *jeknins* user and validate,
 
 ```
 docker exec -it jenkins bash
@@ -159,5 +166,5 @@ pipeline{
 
 #### Exercise
 
-  * Refactor the Jenkinsfile for result app
+  * Refactor the result/Jenkinsfile for nodeJS app
   * Create a Jenkinsfile and a multi branch pipeline for vote python app
