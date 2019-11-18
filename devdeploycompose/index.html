@@ -90,6 +90,16 @@
             
     <li class="toctree-l2"><a href="#deploy-to-dev-with-docker-compose">Deploy to dev with Docker Compose</a></li>
     
+        <ul>
+        
+            <li><a class="toctree-l3" href="#creating-docker-compose-spec">Creating docker compose spec</a></li>
+        
+            <li><a class="toctree-l3" href="#refactoring-docker-compose-with-v3-spec">Refactoring docker compose with v3 spec</a></li>
+        
+            <li><a class="toctree-l3" href="#adding-deploy-to-dev-with-docker-compose">Adding deploy to dev with docker compose</a></li>
+        
+        </ul>
+    
 
     </ul>
 	    </li>
@@ -135,13 +145,67 @@
 <p>Here is what you are going to learn in this chapter,</p>
 <ul>
 <li>You would begin by learning how  docker compose could help launch a monitoring stack.</li>
-<li>Then you would understand the docker compose spec version 1</li>
+<li>understand the docker compose spec version 1</li>
 <li>Keep adding services to docker compose</li>
 <li>Refactor the compose file with version3 syntax</li>
 <li>Create a consolidated jenkins pipeline</li>
 <li>and start deploying to a integrated dev environment with docker compose  </li>
 </ul>
+<h2 id="creating-docker-compose-spec">Creating docker compose spec</h2>
+<pre><code>cd example-voting-app
+</code></pre>
+
 <p><code>file: docker-compose.yaml</code></p>
+<pre><code>vote:
+  build: ./vote
+  command: python app.py
+  links:
+    - redis:redis
+  ports:
+    - 80
+
+redis:
+  image: redis:alpine
+
+worker:
+  build: ./worker
+  dockerfile: Dockerfile
+  links:
+    - redis:redis
+</code></pre>
+
+<pre><code>docker-compose config
+
+docker-compose build
+
+docker-compose build ( observe caching )
+
+docker-compose up -d
+
+docker-compose ps
+
+</code></pre>
+
+<h3 id="additional-commands">Additional Commands</h3>
+<pre><code>docker-compose  images
+
+docker-compose logs
+
+docker-compose logs  worker
+
+docker-compose pull
+
+docker-compose exec vote ps
+
+
+docker-compose stop
+
+docker-compose down
+</code></pre>
+
+<h2 id="refactoring-docker-compose-with-v3-spec">Refactoring docker compose with v3 spec</h2>
+<p><code>file: docker-compose.yaml</code></p>
+<p>Replace  xxxx with your docker hub id.</p>
 <pre><code>version: &quot;3.7&quot;
 
 volumes:
@@ -153,7 +217,7 @@ networks:
 
 services:
   vote:
-    image: initcron/vote:master
+    image: xxxx/vote:latest
     ports:
       - 5000:80
     depends_on:
@@ -174,7 +238,7 @@ services:
       - instavote
 
   result:
-    image: initcron/result:master
+    image: xxxxx/result:latest
     ports:
       - 5001:4000
     depends_on:
@@ -183,7 +247,7 @@ services:
       - instavote
 
   worker:
-    image: initcron/worker:master
+    image: xxxx/worker:latest
     depends_on:
       - redis
       - db
@@ -191,6 +255,7 @@ services:
       - instavote
 </code></pre>
 
+<h2 id="adding-deploy-to-dev-with-docker-compose">Adding deploy to dev with docker compose</h2>
 <p>Add a deploy to dev stage to Jenkinsfile</p>
 <pre><code>
       stage('deploy to dev'){
@@ -203,7 +268,6 @@ services:
             sh 'docker-compose up -d'
           }
       }
-
 </code></pre>
               
             </div>
