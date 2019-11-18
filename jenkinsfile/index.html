@@ -610,10 +610,11 @@ git push origin feature/workerpipe -f
 
 <p>Now you have learned how to use conditional pipeline stages.</p>
 <h2 id="assignment-writing-jenkinsfile-for-result-app">Assignment: Writing  Jenkinsfile for result app</h2>
-<p>You have been tasked to write declarative pipeline for result application.</p>
+<p>You have been tasked to write declarative pipeline for <strong>result</strong>, a nodeJS application.</p>
 <ul>
-<li>Two stages, build and test</li>
-<li>Stages should run conditinoally only when there is a change to <strong>result</strong> subdir</li>
+<li>Install NodeJS plugin and configure 'NodeJS 8.9.0' from <strong>Global Tools</strong>.</li>
+<li>Add two stages, build (npm install) and test (npm test)</li>
+<li>Stages should run conditionally only when there is a change to <strong>result</strong> subdir</li>
 <li>You could refer the  workflow following</li>
 </ul>
 <p><img alt="" src="../images/jenkinsfile8.png" /></p>
