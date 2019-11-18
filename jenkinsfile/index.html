@@ -85,8 +85,6 @@
         
             <li><a class="toctree-l3" href="#multi-branch-pipeline-project">Multi Branch Pipeline Project</a></li>
         
-            <li><a class="toctree-l3" href="#integrating-slack-with-jenkins-optional">Integrating slack with jenkins [optional]</a></li>
-        
             <li><a class="toctree-l3" href="#assignment-writing-jenkinsfile-for-result-app">Assignment: Writing  Jenkinsfile for result app</a></li>
         
         </ul>
@@ -159,9 +157,11 @@
 <li>And finally launch  it with multi branch pipelines  on Jenkins</li>
 </ul>
 <h2 id="enforcing-workflow-with-branch-policies">Enforcing Workflow with Branch Policies</h2>
-<p><strong>Reading List</strong>:
-  * <a href="https://trunkbaseddevelopment.com/">Web: Guide to Trunk Based Development</a><br />
-  * <a href="https://youtu.be/ykZbBD-CmP8?t=306">Video: Trunk Based Development Explained</a></p>
+<p><strong>Reading List</strong>:</p>
+<ul>
+<li><a href="https://trunkbaseddevelopment.com/">Web: Guide to Trunk Based Development</a>    </li>
+<li><a href="https://youtu.be/ykZbBD-CmP8?t=306">Video: Trunk Based Development Explained</a>  </li>
+</ul>
 <p>Lets create branch policies based on trunk based development workflow. With trunk based development,</p>
 <ul>
 <li>Master branch is the trunk/main line of code, which is locked. No direct checkins to master allowed.</li>
@@ -213,25 +213,31 @@ git reset --hard YOURLASTCOMMITID
 <ul>
 <li>Create a branch <code>readme</code> using  command following,</li>
 </ul>
-<p><code>git checkout -b readme</code></p>
+<pre><code>   git checkout -b readme
+</code></pre>
+
 <p>Running this command, git will create and switch to the <em>readme</em> branch.</p>
 <ul>
 <li>Update the <code>README.md</code> file by adding a description of the app.</li>
 </ul>
 <p>e.g.</p>
 <p><code>filename: README.md</code></p>
-<p>```
+<pre><code>
    Example Voting App
-   =========</p>
-<p>This is a sample voting app.
-   ```</p>
+   =========
+
+   This is a sample voting app.
+</code></pre>
+
 <ul>
 <li>Save and  commit the  changes you have made.</li>
 </ul>
-<p><code>git status
-  git commit -am "added application info"
-  git push origin readme</code>
-  This pushes the changes to  <code>readme</code> branch of the repo on GitHub.</p>
+<pre><code>  git status
+  git commit -am &quot;added application info&quot;
+  git push origin readme
+</code></pre>
+
+<p>This pushes the changes to  <code>readme</code> branch of the repo on GitHub.</p>
 <ul>
 <li>
 <p>Now go to the github repository and choose branch <code>readme</code>, there you should see <code>new pull request</code>. The pull request is to help you to merge those changes from the feature branch to master, to the upstream repo you forked,  or even to a completely differnt fork.</p>
@@ -249,9 +255,11 @@ git reset --hard YOURLASTCOMMITID
 </ul>
 <p>After approval  you could  merge the pull request to master. You could delete the branch after merge.</p>
 <h2 id="writing-pipeline-as-a-code">Writing Pipeline as a Code</h2>
-<p><strong>Reading List</strong>:
-  * <a href="https://jenkins.io/doc/book/pipeline/syntax/">Declarative Pipeline Syntax</a>
-  * <a href="https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#dir-change-current-directory">Declarative Pipeline Steps</a></p>
+<p><strong>Reading List</strong>:</p>
+<ul>
+<li><a href="https://jenkins.io/doc/book/pipeline/syntax/">Declarative Pipeline Syntax</a>  </li>
+<li><a href="https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#dir-change-current-directory">Declarative Pipeline Steps</a>  </li>
+</ul>
 <p>Following is an example pipeline code. Examine it  to learn how to create a Jenkinsfile and define the jobs as a code.
 <img alt="" src="../images/jenkinsfile2.png" /></p>
 <p>Some of the important directves are,</p>
@@ -601,116 +609,6 @@ git push origin feature/workerpipe -f
 </code></pre>
 
 <p>Now you have learned how to use conditional pipeline stages.</p>
-<h2 id="integrating-slack-with-jenkins-optional">Integrating slack with jenkins [optional]</h2>
-<p><code>this is an optional section. Refer to it only if you wish to integrate with slack for notifications</code></p>
-<p>Here you will learn, how to integrate slack with jenkins and this will helpful to send notifications related to your build from jenkins to slack channel.</p>
-<p>Prerequsite for this, you need a slack account and you should be the slack channel administrator.</p>
-<p>Follow the following steps to complete this setup.</p>
-<p><strong>Steps:</strong></p>
-<ul>
-<li>
-<p>create slack account and create a channel with the name of <code>instavote-cd</code>.
-<img alt="" src="../images/jenkinsfile6.png" /></p>
-</li>
-<li>
-<p>After creating the channel, go to <code>administrator -&gt; manage apps</code>. It will open a browser window.  search <code>Jenkins CI</code> and select configure. From the configuration pagechoose  <code>instavote-cd</code> and add jenkins integration, it will show step by step process to setup jenkins configuration.</p>
-</li>
-<li>
-<p>Go to your jenkins, <code>manage jenkins -&gt; manage plugins -&gt; available plugins</code> search <code>slack notification</code> plugin and install.</p>
-</li>
-<li>
-<p>Go to <code>manage jenkins -&gt; configure system</code>, at the bottom you could find Global slack notifier settings. copy your <code>team sub domain</code> from slack configure page which you got in previous step and add in jenkins page.</p>
-</li>
-<li>
-<p>Add integration credential id, that is secret text, add a secret text using integration token credential id given in slack jenkins configuration page.   </p>
-</li>
-<li>
-<p>Add your channel id as <code>instavote-cd</code> and save the configuration.
-  <img alt="" src="../images/jenkinsfile7.png" /></p>
-</li>
-<li>
-<p>From the browser's slack configuration page,  click on save the configuration atleast onec, to enable the notification.</p>
-</li>
-<li>
-<p>Now from your Jenkins, choose any job and go to the configuration page.  Add <code>slack notification</code> as the post build action. Save  and build the job. Voila !  Now you could see the notifications right into  your slack channel.</p>
-</li>
-</ul>
-<h3 id="sending-notifications-from-a-pipeline-job">Sending notifications from a pipeline job</h3>
-<p>You could add slack notifications to any pipeline job with slackSend directives. You would have to set up the intgration as desribed above before you attempt this.</p>
-<p>Following is a code snipped, which demonstrates how to achieve this.</p>
-<p><code>file: worker/Jenkinsfile</code></p>
-<pre><code>pipeline {
-  agent any
-
-  tools{
-    maven 'Maven 3.6.2'
-
-  }
-
-  stages{
-      stage(build){
-        when{
-            changeset &quot;**/worker/**&quot;
-          }
-
-        steps{
-          echo 'Compiling worker app..'
-          dir('worker'){
-            sh 'mvn compile'
-          }
-        }
-      }
-      stage(test){
-        when{
-          changeset &quot;**/worker/**&quot;
-        }
-        steps{
-          echo 'Running Unit Tets on worker app..'
-          dir('worker'){
-            sh 'mvn clean test'
-           }
-
-          }
-      }
-      stage(package){
-        when{
-          branch 'master'
-          changeset &quot;**/worker/**&quot;
-        }
-        steps{
-          echo 'Packaging worker app'
-          dir('worker'){
-            sh 'mvn package -DskipTests'
-            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-          }
-
-        }
-      }
-  }
-
-  post{
-    always{
-        echo 'Building multibranch pipeline for worker is completed..'
-    }
-    failiure{
-      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
-    }
-    success{
-      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
-    }
-  }
-}
-</code></pre>
-
-<p>Once you make changes in Jenkinsfile, commit and push to <code>feature/workerpipe</code> branch.</p>
-<pre><code>git status
-git add worker/Jenkisfile
-git commit -am &quot;add slack notifications&quot;
-git push origin feature/workerpipe
-</code></pre>
-
-<p>After push the changes to branch, the pipeline will build automatically and send notification to slack. From slack you will get link to visit the build status of your job.</p>
-<p>Since this  feature is complete, it is time to merge it all into the master and delete this feature branch.  You could raise a pull request, get it reviewed, observe the CI feedback right onto the pull request page, before you merge it to the master. Once merged, dont forget to delete the branch from remote repo  as well as from the local workspace.</p>
 <h2 id="assignment-writing-jenkinsfile-for-result-app">Assignment: Writing  Jenkinsfile for result app</h2>
 <p>You have been tasked to write declarative pipeline for result application.</p>
 <ul>
