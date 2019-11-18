@@ -80,8 +80,6 @@
         
             <li><a class="toctree-l3" href="#creating-a-job-pipeline">Creating a Job pipeline</a></li>
         
-            <li><a class="toctree-l3" href="#integrating-github-with-jenkins-optional">Integrating Github with Jenkins  [Optional]</a></li>
-        
             <li><a class="toctree-l3" href="#assignment-create-a-pipeline-for-the-nodejs-app">Assignment - Create a pipeline for the Nodejs app</a></li>
         
         </ul>
@@ -332,7 +330,7 @@ job copy <code>worker-test</code> or <code>worker- build</code> job.</p>
 <p>Now you are going to setup pipeline view for this build jobs,</p>
 <ul>
 <li>
-<p>Begin by installing  <code>build pipeline</code> plugin from manage jenkins page.</p>
+<p>Begin by installing  <code>**Build Pipeline**</code> plugin from manage jenkins page.</p>
 </li>
 <li>
 <p>From jenkins console, create a new view. Select type as pipeline view and provide name for it.</p>
@@ -342,114 +340,17 @@ job copy <code>worker-test</code> or <code>worker- build</code> job.</p>
 <img alt="" src="../images/jenkins19.png" /></p>
 </li>
 <li>
-<p>Once you complete, you could see build pipeline of your job. Green is successful, red is failed and blue is to do, yellow is in progress.</p>
+<p>Once you complete, you could see <strong>Build Pipeline</strong> of your job. Green is successful, red is failed and blue is to do, yellow is in progress.</p>
 </li>
 </ul>
 <p>You have just completed creating a pipeline for a java project.</p>
-<h2 id="integrating-github-with-jenkins-optional">Integrating Github with Jenkins  [Optional]</h2>
-<p><code>Warning: This would work only if your Jenkins server is available  publically and can be accessed from github. In case you are running Jenkins on your local machine e.g. laptop, with a private IP space, this will not work.</code></p>
-<p>Here you will learn, how to integrate github with jenkins and trigger build automatically using github webhooks.</p>
-<h3 id="setting-up-build-triggers-using-github-webbooks">Setting up build triggers using Github webbooks</h3>
-<p>You could trigger your job when there is a commit changes in master branch. webhook will be trigger your job from github side and even you could send status back to github, so you don't need polling.</p>
-<p>Follow these steps to set up the webhook</p>
-<ul>
-<li>
-<p>To setup a  github token, go to github's  user page and select <code>settings -&gt; choose developer settings -&gt; select personal access token</code>. In the personal access token page select <code>generate new token</code>, add a note  and generate it. once you generate your token save it somewhere, because  you can't view it again.
-<img alt="" src="../images/jenkins20.png" /></p>
-</li>
-<li>
-<p>Now go to jenkins page, <code>manage jenkins -&gt; configure system</code>, choose github to add github server. provide name of your github account and add your credentials like following image,
-<img alt="" src="../images/jenkins21.png" />
-here secret is your github secret id and you need to provide your id description, save it.</p>
-</li>
-<li>
-<p>Choose credentials as <code>secret token github</code> and check the manage hooks. save the configuration once you complete .
-<img alt="" src="../images/jenkins22.png" /></p>
-</li>
-<li>
-<p>Go to your <code>worker-build</code> configure page, choose <code>github project</code> and provide  repository url . Remove poll scm and choose github hook trigger for gitscm polling, save the changes.</p>
-</li>
-<li>
-<p>Again go to  github repository and choose <code>settings -&gt; webhooks</code>, add payload url and content type as application/json, save it(refer example image given following).
-<img alt="" src="../images/jenkins23.png" /></p>
-</li>
-<li>
-<p>Now go to git repository, add some file in your repository and commit the changes.</p>
-</li>
-<li>
-<p>Once you make commit on your repository, it will automatically trigger your build. You could see it by using build pipeline which you have created.</p>
-</li>
-</ul>
-<p>This is how you could integrate github with jenkins.</p>
-<h3 id="adding-jenkins-status-badges-to-github-optional">Adding Jenkins Status Badges to Github [Optional]</h3>
-<p><code>Warning: This works only if Jenkins server is accessible from github.</code></p>
-<p>With this sub section, you are going to setup two way communication between jenkins and github. you could send the status of the build from jenkins to the github and display it as a badge.</p>
-<p>You need to install <code>Embeddable Build Status</code> plugin from <code>manage jenkins -&gt; manage plugin -&gt; Available</code>. Once installation done, you could see Embeddable build status on your every job page.</p>
-<p>Follow the following steps to add jenkins status badge to github</p>
-<ul>
-<li>
-<p>Go to  <code>worker-build</code> job page,  select embeddable build status. In that embeddable status page, copy <code>markdown unprotected link</code> under <code>links</code> and paste it on your github repository README.md file which you have created last lab and commit the changes.   </p>
-</li>
-<li>
-<p>Once you make commit changes, you could see <code>build status  passing</code> on your same README.md file and if you see jenkins job, it will automatically triggers the build which you have created.
-<img alt="" src="../images/jenkins24.png" /></p>
-</li>
-<li>
-<p>goto <code>worker-build</code> configuration page, under build step change the root file as <code>pom.xml</code> instead of <code>worker/pom.xml</code> and save the changes.</p>
-</li>
-<li>
-<p>Build your <code>worker-build</code> job, it will fail your build. Now goto github repository page there you could see build failed status.</p>
-</li>
-<li>
-<p>Correct your <code>worker-build</code> and add the embeddable build status <code>markdown unprotect link</code> of worker-test &amp; worker-package to your github repository README.md file and test it by your self.</p>
-</li>
-</ul>
-<p>This how you could add jenkins status badge to github.</p>
-<h3 id="configuring-job-status-with-commit-messages">Configuring Job status with commit messages</h3>
-<p>Here you will learn, how to configure build &amp; test job status with github commit messages.</p>
-<p>Follow the following steps to configure job status</p>
-<ul>
-<li>
-<p>Goto your <code>worker-build</code> job configuration page, under post build action choose <code>Set github communication status (universal)</code> and make status result as <code>One of default messages and statuses</code>, save the changes.
-  <img alt="" src="../images/jenkins25.png" /></p>
-</li>
-<li>
-<p>Copy your <code>github project url</code> form worker-build and paste it on <code>worker-test</code> and add the post build action <code>Set github communication status(universal)</code> for <code>worker-test</code> as well. refer previous step to add post build action.</p>
-</li>
-<li>
-<p>Now goto your <code>worker-test</code> job page, there select embeddable build status. In that embeddable status page, copy <code>markdown unprotected link</code> under <code>links</code> and paste it on your github repository README.md file, add <code>subject=Unittest</code> with your <code>worker-test</code> link. Refer example image given following.
-  <img alt="" src="../images/jenkins26.png" /></p>
-</li>
-<li>
-<p>Once you commit the changes, it will automatically build the triggers. you could see the builds in pipeline view and the status will be updated on the github.</p>
-</li>
-<li>
-<p>If you check your commit messages it show the as check marked. even you could see all the current build status with build number on git commit message. If you click details in commit
-  message, it will take you to jenkins page.</p>
-</li>
-<li>
-<p>You could change the <code>worker-build</code> git status color by adding following subject in your git repository <code>README.md</code>file.</p>
-</li>
-</ul>
-<p><code>[![Build Status](http://localhost:8080/buildStatus/icon?job=instavote%2Fworker-build&amp;subject=Build&amp;color=blue)](http://localhost:8080/job/instavote/job/worker-build/)</code>
-  * After updating the changes in <code>README.md</code> commit the file . It will triggers the pipeline. This time build will fail and you could see build color has changed in git status message.</p>
-<ul>
-<li>
-<p>If the build is failed, git commit message will be in red mark.</p>
-</li>
-<li>
-<p>Fix your <code>worker-test</code> job and save the changes, by providing correct path and add <code>pre steps</code> from configuration, choose <code>set build status "pending" on GitHub commit</code> and save the configuration.</p>
-</li>
-<li>
-<p>Make one more commit in your git repository <code>README.md</code> file by using following code and commit the file.
-  <code>[![Build Status](http://localhost:8080/buildStatus/icon?job=instavote%2Fworker-test&amp;subject=UnitTest&amp;color=pink)](http://localhost:8080/job/instavote/job/worker-test/)</code></p>
-</li>
-<li>Once you commit the file it will trigger the build but in commit message you could see pending state till the build get finish and whenever it get finished the status will be change with the check mark.</li>
-</ul>
-<p>This is how you could configure job status to git commit message.</p>
 <h2 id="assignment-create-a-pipeline-for-the-nodejs-app">Assignment - Create a pipeline for the Nodejs app</h2>
 <p>Here you need to create pipeline for result application and use build tool as npm.</p>
-<p>Create tow jobs, first one<code>result-build</code> job will run npm install after git chekin with downstream of second job.<code>result-test</code>is second job, it will run npm test. These two will be triggered automatically via a webhook.</p>
+<ul>
+<li>Create two jobs, first by name <code>result-build</code> which will will run <strong>npm install</strong> and define the second job as downstream.  </li>
+<li><code>result-test</code> is the second job, which  will run <strong>npm test</strong> as the command.</li>
+</ul>
+<p>These two should  be triggered automatically via a PollSCM trigger scheduled to run every two minutes .</p>
               
             </div>
           </div>
