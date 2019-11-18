@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Jenkinsfile nodejs - CI/CD Lab Guide</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Jenkinsfile nodejs";
+    var mkdocs_page_input_path = "solutions/jenkinsfile-nodejs.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> CI/CD Lab Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../dockerintro/">Lab 1 - Docker for CI/CD</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../git/">Lab 2 - Revision Control with Git</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../jenkins/">Lab 3 - Setting up CI Pipeline with Jenkins</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../jenkinsfile/">Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../dockerjenkins/">Lab 5 - Using Docker to Simplify Jenkins Pipeline</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../dockerfile/">Lab 6 - Packaging Applications with Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../devdeploycompose/">Lab 7 - Deploy to Dev with Compose</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../tests/">Lab 8 - Adding Automated Testing</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">CI/CD Lab Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Jenkinsfile nodejs</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h3 id="writing-jenkinsfile-for-a-nodejs-app-">Writing jenkinsfile for a NodeJS app :-</h3>
+<p>Here you will verify your declarative pipeline for result and if you have any doubts to create Jenkinsfile for result, follow the below steps to complete the pipeline.</p>
+<p>Steps :-
+Create a branch <code>feature/resultpipe</code> using git checkout command.</p>
+<pre><code>git checkout -b feature/resultpipe
+</code></pre>
+
+<p>Create a Jenkinsfile inside result directory or copy the previous Jenkinsfile file from worker to result.
+In Jenkinsfile, add nodejs tools with exact version that configured in <code>manage jenkins -&gt; global tool configuration -&gt; Nodejs</code>.
+Refer your Jenkinsfile by using below code.</p>
+<pre><code>pipeline {
+  agent any
+
+  tools{
+    nodejs 'NodeJS 8.9.0'
+
+  }
+
+  stages{
+      stage(build){
+        when{
+            changeset &quot;**/result/**&quot;
+          }
+
+        steps{
+          echo 'Compiling result app..'
+          dir('worker'){
+            sh 'npm install'
+          }
+        }
+      }
+      stage(test){
+        when{
+          changeset &quot;**/result/**&quot;
+        }
+        steps{
+          echo 'Running Unit Tets on result app..'
+          dir('result'){
+            sh 'npm test'
+           }
+
+          }
+      }
+  }
+
+  post{
+    always{
+        echo 'Building multibranch pipeline for worker is completed..'
+    }
+    failiure{
+      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
+    }
+    success{
+      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
+    }
+  }
+}
+</code></pre>
+
+<p>Now you have a Jenkisfile which install &amp; test npm and it will send slack notification as well.
+commit the changes into <code>feature/resultpipe</code> branch by using below commands and it will automatically</p>
+<pre><code> git status
+ git add feature/resultpipe
+ git commit -am &quot;adding Jenkinsfile for result app&quot;
+ git push origin feature/resultpipe
+</code></pre>
+
+<p>In your jenkins, create new multibranch pipeline as <code>result-pipe</code> and copy form <code>worker-pipe</code>.
+goto your <code>result-pipe</code> configuration page add description as <code>instavote result multi branch pipeline</code> and under build configuration change the script path as <code>result/Jenkinsfile</code> and save the configiuration, it will start scaning your repository and start your build as well.
+goto <code>result/test/mock.test.js</code> file, add the one more more mocktest form exiting mocktest. commit the changes to <code>feature/resultpipe</code> branch using  below commands.</p>
+<pre><code>git status
+git add feature/resultpipe
+git commit -am &quot;adding mock test&quot;
+git push origin feature/resultpipe
+</code></pre>
+
+<p>Once you make commit change into the branch, it will automatically build the pipeline and gives the result. Now create a pull request from main github account and review from another account and merge with master branch. Once you merge with master branch, jenkins will run pipeline job for master branch and you could check slack notification as well. Disable our previous jobs workerbuild, resultbuild.</p>
+<p>Now you have learned how to write a Jenkinsfile for nodejs application.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

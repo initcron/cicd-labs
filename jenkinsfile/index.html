@@ -361,7 +361,7 @@ git branch
   }
 
   stages{
-      stage(&quot;build){
+      stage(&quot;build&quot;){
           steps{
               echo 'Compiling worker app'
               dir('worker'){
@@ -502,6 +502,7 @@ it will automatically scan your repository. Whenever it detects new branch under
               echo 'Packaging worker app'
               dir('worker'){
                 sh 'mvn package -DskipTests'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
               }
 
           }
@@ -510,7 +511,6 @@ it will automatically scan your repository. Whenever it detects new branch under
 
   post{
     always{
-        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
         echo 'Building multibranch pipeline for worker is completed..'
     }
   }
@@ -617,7 +617,7 @@ git push origin feature/workerpipe -f
 <li>You could refer the  workflow following</li>
 </ul>
 <p><img alt="" src="../images/jenkinsfile8.png" /></p>
-<p><a href="../jenkinsfile/solutions.md">You could reference this page to observer the solution.</a></p>
+<p><a href="../solutions/jenkinsfile-nodejs/">You could reference this page to observer the solution.</a></p>
               
             </div>
           </div>
