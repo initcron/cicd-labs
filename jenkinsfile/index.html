@@ -342,13 +342,13 @@ git branch
 
 <p>Now you are going to write Jenkinsfile for worker application using previous sample code the following steps to write Jenkinsfile.</p>
 <p><strong>Steps:</strong></p>
-<p>Create a Jenkisfile inside <code>worker</code> dir of your code. Before you start writing the code, check your maven version in your jenkins <code>Manage Jenkins --&gt; Global Tools Configurations -&gt; Maven</code>  and note down the exact name you are referring to the configuration (e.g. Maven 3.6.1).</p>
+<p>Create a Jenkisfile inside <code>worker</code> dir of your code. Before you start writing the code, check your maven version in your jenkins <code>Manage Jenkins --&gt; Global Tools Configurations -&gt; Maven</code>  and note down the exact name you are referring to the configuration (e.g. Maven 3.6.2).</p>
 <p><code>file: worker/Jenkinsfile</code></p>
 <pre><code>pipeline {
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -413,7 +413,7 @@ it will automatically scan your repository. Whenever it detects new branch under
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -467,7 +467,7 @@ it will automatically scan your repository. Whenever it detects new branch under
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -531,7 +531,7 @@ git push origin feature/workerpipe
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -643,7 +643,7 @@ git push origin feature/workerpipe -f
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
