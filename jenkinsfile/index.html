@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile - CI/CD Lab Guide</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile";
+    var mkdocs_page_input_path = "jenkinsfile.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CI/CD Lab Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerintro/">Lab 1 - Docker for CI/CD</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../git/">Lab 2 - Revision Control with Git</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkins/">Lab 3 - Setting up CI Pipeline with Jenkins</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#pipeline-as-a-code-with-jenkinsfile">Pipeline as a Code with Jenkinsfile</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#enforcing-workflow-with-branch-policies">Enforcing Workflow with Branch Policies</a></li>
+        
+            <li><a class="toctree-l3" href="#code-reviews-with-pull-requests">Code Reviews with Pull Requests</a></li>
+        
+            <li><a class="toctree-l3" href="#writing-pipeline-as-a-code">Writing Pipeline as a Code</a></li>
+        
+            <li><a class="toctree-l3" href="#multi-branch-pipeline-project">Multi Branch Pipeline Project</a></li>
+        
+            <li><a class="toctree-l3" href="#integrating-slack-with-jenkins-optional">Integrating slack with jenkins [optional]</a></li>
+        
+            <li><a class="toctree-l3" href="#assignment-writing-jenkinsfile-for-result-app">Assignment: Writing  Jenkinsfile for result app</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerjenkins/">Lab 5 - Using Docker to Simplify Jenkins Pipeline</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerfile/">Lab 6 - Packaging Applications with Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../devdeploycompose/">Lab 7 - Deploy to Dev with Compose</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Lab 8 - Adding Automated Testing</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CI/CD Lab Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="pipeline-as-a-code-with-jenkinsfile">Pipeline as a Code with Jenkinsfile</h1>
+<hr />
+<p>Here is what you are going to learn in this lab,</p>
+<ul>
+<li>You would begin by defining branch protection rules on GitHub</li>
+<li>Then you would learn about enforcing code reviews via raising pull requests</li>
+<li>You would then start learning how to write pipeline as a code</li>
+<li>Learn the syntax to write declarative Jenkins pipeline</li>
+<li>Create Jenkinsfiles for a Java and NodeJS applications</li>
+<li>And finally launch  it with multi branch pipelines  on Jenkins</li>
+</ul>
+<h2 id="enforcing-workflow-with-branch-policies">Enforcing Workflow with Branch Policies</h2>
+<p><strong>Reading List</strong>:
+  * <a href="https://trunkbaseddevelopment.com/">Web: Guide to Trunk Based Development</a><br />
+  * <a href="https://youtu.be/ykZbBD-CmP8?t=306">Video: Trunk Based Development Explained</a></p>
+<p>Lets create branch policies based on trunk based development workflow. With trunk based development,</p>
+<ul>
+<li>Master branch is the trunk/main line of code, which is locked. No direct checkins to master allowed.</li>
+<li>Every bugfix gets its own branch</li>
+<li>Every feature gets its own branch too</li>
+<li>Features branches are typically short lived</li>
+<li>Merges to master require pull request</li>
+<li>Further policies could be added to enforce the code review as well as integrate with jenkins ci to run per branch pipeline</li>
+</ul>
+<p>This is how it should look like,
+<img alt="branch policy" src="../images/br-policy.png" /></p>
+<p>To define the branch policies,</p>
+<ul>
+<li>
+<p>Goto settings for your github repository and select <strong>branches</strong> options
+  <img alt="repo settings" src="../images/br-policy-01.png" /></p>
+</li>
+<li>
+<p>From <strong>Branch Protection Rules</strong> section, click on <strong>Add rule</strong> button.</p>
+</li>
+<li>
+<p>Add the following set of rules</p>
+<ul>
+<li>Require Pull request reviews before merging</li>
+<li>Dismiss stale pull request approvals when new commits are pushed</li>
+<li>Require status checks to pass before merging</li>
+<li>Include Administrators</li>
+</ul>
+</li>
+</ul>
+<p>The following image depict the branch protection rules <img alt="branch protection rules " src="../images/br-policy-02.png" /></p>
+<h3 id="testing-branch-protection-rules">Testing Branch Protection Rules</h3>
+<p>You need to clone the repository to your machine if you are not cloned before. Once you have the cloned repository in your local, made some changes in your <code>README.md</code> file and check and commit those changes once it done by using following commands.</p>
+<pre><code>git diff
+git commit -am &quot;test&quot;
+git push origin master
+</code></pre>
+
+<p>Whenever you are trying to push some changes, it throws an error <code>master protected branch hook declined</code>, because you can't directly push to master and atleast it should be approved by at least  one reviewers.</p>
+<p>Now you need to reset your commit by using previous commit id.
+<code>replace YOURLASTCOMMITID with the actual commit id following</code></p>
+<pre><code>git log
+git reset --hard YOURLASTCOMMITID
+</code></pre>
+
+<p>Once you done hard reset, it will back to your previous commit.</p>
+<h2 id="code-reviews-with-pull-requests">Code Reviews with Pull Requests</h2>
+<p>With this sub section, you will learn how to make changes in master branch by using code reviews and pull requests. You'r task this time is just to update the existing README.md file to the project and incorporate those changes to the trunk i.e. master branch.</p>
+<ul>
+<li>Create a branch <code>readme</code> using  command following,</li>
+</ul>
+<p><code>git checkout -b readme</code></p>
+<p>Running this command, git will create and switch to the <em>readme</em> branch.</p>
+<ul>
+<li>Update the <code>README.md</code> file by adding a description of the app.</li>
+</ul>
+<p>e.g.</p>
+<p><code>filename: README.md</code></p>
+<p>```
+   Example Voting App
+   =========</p>
+<p>This is a sample voting app.
+   ```</p>
+<ul>
+<li>Save and  commit the  changes you have made.</li>
+</ul>
+<p><code>git status
+  git commit -am "added application info"
+  git push origin readme</code>
+  This pushes the changes to  <code>readme</code> branch of the repo on GitHub.</p>
+<ul>
+<li>
+<p>Now go to the github repository and choose branch <code>readme</code>, there you should see <code>new pull request</code>. The pull request is to help you to merge those changes from the feature branch to master, to the upstream repo you forked,  or even to a completely differnt fork.</p>
+</li>
+<li>
+<p>Select <code>new pull request</code> and choose your base as master branch, add the description and create pull request.</p>
+</li>
+<li>
+<p>Add a reviewer: Creating a pull request does not allow you to merge immediately. It would demand a code review which is been manadated as part of the branch protection rules you have set. Add at least one of your collaborators as a reviewer. If you do not have a collaborator, create another account on GitHub, configure it as a collaborator, and add it as a reviewer.  </p>
+</li>
+<li>
+<p>Request a review. If you are the reviewer, go to pull requests,  review the changes and approve.
+  <img alt="" src="../images/jenkinsfile1.png" /></p>
+</li>
+</ul>
+<p>After approval  you could  merge the pull request to master. You could delete the branch after merge.</p>
+<h2 id="writing-pipeline-as-a-code">Writing Pipeline as a Code</h2>
+<p><strong>Reading List</strong>:
+  * <a href="https://jenkins.io/doc/book/pipeline/syntax/">Declarative Pipeline Syntax</a>
+  * <a href="https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#dir-change-current-directory">Declarative Pipeline Steps</a></p>
+<p>Following is an example pipeline code. Examine it  to learn how to create a Jenkinsfile and define the jobs as a code.
+<img alt="" src="../images/jenkinsfile2.png" /></p>
+<p>Some of the important directves are,</p>
+<ul>
+<li>Pipeline</li>
+<li>Agent</li>
+<li>Tools</li>
+<li>Stages | Stage | Steps</li>
+<li>Post</li>
+</ul>
+<h3 id="creating-a-sample-declarative-pipeline">Creating a sample declarative pipeline</h3>
+<p>In this sub section  you will learn how to create and execute a declarative pipeline.</p>
+<p>Begin by creating a sample pipeline job. To create it, go to jenkins page and select new item to create <code>pipeline-01</code> job, while creating pipeline job use project as <code>pipeline</code></p>
+<p>goto  <code>pipeline-01</code> configuration page, in pipeline step choose <code>hello-world</code> script and save the configuration to run the build. Once you run the build it will successfully build helloworld job.</p>
+<p>Now you are going to write declarative pipeline, visit <a href="https://jenkins.io/doc/book/pipeline/syntax/">declarative pipeline</a> for your reference.</p>
+<p>Use the following code to configure your pipeline job.</p>
+<pre><code>pipeline {
+  agent any
+
+  stages{
+      stage(one){
+          steps{
+              echo 'step 1'
+          }
+      }
+      stage(two){
+          steps{
+              echo 'step 2'
+          }
+      }
+      stage(three){
+          steps{
+              echo 'step 3'
+          }
+      }
+  }
+
+  post{
+    always{
+        echo 'This pipeline is completed..'
+    }
+  }
+}
+</code></pre>
+
+<p>After configure the job, build it view the stage view to know how the pipeline works and how much time it will take to complete the job.
+<img alt="" src="../images/jenkinsfile3.png" /></p>
+<p>Now add some additional step like <code>sleep time</code> with the same job, refer following code for the configuration. Save the configuration and build the job for the result.</p>
+<pre><code>pipeline {
+  agent any
+
+  stages{
+      stage(one){
+          steps{
+              echo 'step 1'
+              sleep 3
+          }
+      }
+      stage(two){
+          steps{
+              echo 'step 2'
+              sleep 9
+          }
+      }
+      stage(three){
+          steps{
+              echo 'step 3'
+              sleep 5
+          }
+      }
+  }
+
+  post{
+    always{
+        echo 'This pipeline is completed..'
+    }
+  }
+}
+</code></pre>
+
+<p>you could see the time interval between each steps in stage view and select to see a specific stage logs.</p>
+<h3 id="jenkinsfile-for-a-java-app">Jenkinsfile for a Java App</h3>
+<p>With this section,  your will define pipeline as a code for a java  worker app  which uses maven as a build tool.</p>
+<p>Create new <code>feature/workerpipe</code> branch, by using following command,</p>
+<pre><code>git checkout -b feature/workerpipe
+git branch
+</code></pre>
+
+<p>Now you are going to write Jenkinsfile for worker application using previous sample code the following steps to write Jenkinsfile.</p>
+<p><strong>Steps:</strong></p>
+<p>Create a Jenkisfile inside <code>worker</code> dir of your code. Before you start writing the code, check your maven version in your jenkins <code>Manage Jenkins --&gt; Global Tools Configurations -&gt; Maven</code>  and note down the exact name you are referring to the configuration (e.g. Maven 3.6.1).</p>
+<p><code>file: worker/Jenkinsfile</code></p>
+<pre><code>pipeline {
+  agent any
+
+  tools{
+    maven 'maven 3.6.1'
+
+  }
+
+  stages{
+      stage(&quot;build){
+          steps{
+              echo 'Compiling worker app'
+              dir('worker'){
+                sh 'mvn compile'
+              }
+          }
+      }
+      stage(two){
+          steps{
+              echo 'Running Unit Tets on worker app'
+
+          }
+      }
+      stage(three){
+          steps{
+              echo 'Packaging worker app'
+
+          }
+      }
+  }
+
+  post{
+    always{
+        echo 'Building multibranch pipeline for worker is completed..'
+    }
+  }
+}
+</code></pre>
+
+<p>Once you created Jenkinsfile, commit the file and push the changes to <code>feature/workerpipe</code></p>
+<pre><code> git status
+ git add worker/Jenkisfile
+ git commit -am &quot;added Jenkinsfile for worker with build job&quot;
+ git push origin feature/workerpipe
+</code></pre>
+
+<h2 id="multi-branch-pipeline-project">Multi Branch Pipeline Project</h2>
+<p>With this section,  you are going to create and  execute a multi branch pipeline which</p>
+<ul>
+<li>scans your repository automatically for Jenkinsfile</li>
+<li>setup the pipeline jobs for the branches which contain the above pipeline script</li>
+<li>start executing the CI jobs  </li>
+</ul>
+<p>Refer to the  following steps to create a  multi branch pipeline.</p>
+<p><strong> Steps:</strong></p>
+<ul>
+<li>Create a new job <code>worker-pipe</code> in your instavote directory, choose project type as multibranch pipeline.</li>
+<li>In the  job configuration page,  under the branch sources choose <code>GitHub</code>,  add your account credentials, and choose the  project repository. example image is given following,
+<img alt="" src="../images/jenkinsfile4.png" /></li>
+<li>Under build configuration, mention your Jenkinsfile path as <code>worker/Jenkisfile</code>.</li>
+<li>Add periodical checks interval as <code>5 minutes</code> under <strong>Scan multibranch pipeline</strong> triggers and save the configuration,
+<img alt="" src="../images/jenkinsfile5.png" />
+it will automatically scan your repository. Whenever it detects new branch under repository, it  scans and runs the pipeline build automatically.</li>
+</ul>
+<p>Once the pipeline run is succesful, add two more jobs in the same Jenkinsfile viz.  <code>mvn clean test</code> and <code>mvn package</code></p>
+<pre><code>pipeline {
+  agent any
+
+  tools{
+    maven 'maven 3.6.1'
+
+  }
+
+  stages{
+      stage(&quot;build&quot;){
+          steps{
+              echo 'Compiling worker app..'
+              dir('worker'){
+                sh 'mvn compile'
+              }
+          }
+      }
+      stage(&quot;test&quot;){
+          steps{
+              echo 'Running Unit Tets on worker app..'
+              dir('worker'){
+                sh 'mvn clean test'
+              }
+
+          }
+      }
+      stage(&quot;package&quot;){
+          steps{
+              echo 'Packaging worker app'
+              dir('worker'){
+                sh 'mvn package'
+              }
+
+          }
+      }
+  }
+
+  post{
+    always{
+        echo 'Building multibranch pipeline for worker is completed..'
+    }
+  }
+}
+</code></pre>
+
+<p>After making changes in Jenkisfile, commit the file from your <code>feature/workerpipe</code> and push the changes into the same branch.</p>
+<pre><code> git status
+ git add worker/Jenkisfile
+ git commit -am &quot;added Test and package job for worker pipeline&quot;
+ git push origin feature/workerpipe
+</code></pre>
+
+<p>Once you push the changes to <code>feature/workerpipe</code> branch, webhook/scan  will automatically trigger the <code>feature/workerpipe</code> branch build in instavote multibranch pipeline.</p>
+<p>Now after running package, it will create jar/war file. You need to archive that artifact and for your feature use, you could download that file from jenkins.</p>
+<pre><code>pipeline {
+  agent any
+
+  tools{
+    maven 'maven 3.6.1'
+
+  }
+
+  stages{
+      stage(one){
+          steps{
+              echo 'Compiling worker app..'
+              dir('worker'){
+                sh 'mvn compile'
+              }
+          }
+      }
+      stage(two){
+          steps{
+              echo 'Running Unit Tets on worker app..'
+              dir('worker'){
+                sh 'mvn clean test'
+              }
+
+          }
+      }
+      stage(three){
+          steps{
+              echo 'Packaging worker app'
+              dir('worker'){
+                sh 'mvn package -DskipTests'
+              }
+
+          }
+      }
+  }
+
+  post{
+    always{
+        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+        echo 'Building multibranch pipeline for worker is completed..'
+    }
+  }
+}
+</code></pre>
+
+<p>Commit the chanegs to <code>feature/workerpipe</code> and push to the branch.</p>
+<pre><code>git status
+git add worker/Jenkisfile
+git commit -am &quot;archive artifacts, skiptest and package&quot;
+git push origin feature/workerpipe
+</code></pre>
+
+<p>You have setup a multibranch pipeline so that the CI pipelines are run automatically for every branch that you create in future. This is extremely useful to get the feedback from CI system even  before you merge the code into the trunk. This should  get rid of master branch with a broken build completely.  </p>
+<h3 id="configuring-conditional-execution-of-stages">Configuring Conditional Execution of Stages</h3>
+<p>As with the current configuration, the pipeline you have created will launch for any and every change committed to the repository. However, it makes sense to restrict that only to the subset of changes made for the worker application. Specially a desirable feature with mono repositories which contain multiple sub projects.</p>
+<p>You may also want to restrict certain jobs to run only on specific branches e.g. integration and acceptance tests should run only for the master branch, packaging applications to create and distribute artifacts also is relevant only for the master branch.</p>
+<p>How to achieve that is by setting up conditional execution. You are going to  define following conditionbs for the worker pipline,</p>
+<ul>
+<li>run packaging job only on master</li>
+<li>run the jobs in this pipeline only if code in worker subdir is updated</li>
+</ul>
+<p>Read the description of  <strong>when</strong> directive in the Jenkinsfile documentation for reference before you start refactoring the code as follows,   </p>
+<p><code>file: worker/Jenkinsfile</code></p>
+<pre><code>pipeline {
+  agent any
+
+  tools{
+    maven 'maven 3.6.1'
+
+  }
+
+  stages{
+      stage(one){
+        when{
+            changeset &quot;**/worker/**&quot;
+          }
+
+        steps{
+          echo 'Compiling worker app..'
+          dir('worker'){
+            sh 'mvn compile'
+          }
+        }
+      }
+      stage(two){
+        when{
+          changeset &quot;**/worker/**&quot;
+        }
+        steps{
+          echo 'Running Unit Tets on worker app..'
+          dir('worker'){
+            sh 'mvn clean test'
+           }
+
+          }
+      }
+      stage(three){
+        when{
+          branch 'master'
+          changeset &quot;**/worker/**&quot;
+        }
+        steps{
+          echo 'Packaging worker app'
+          dir('worker'){
+            sh 'mvn package -DskipTests'
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+          }
+
+        }
+      }
+  }
+
+  post{
+    always{
+        echo 'Building multibranch pipeline for worker is completed..'
+    }
+  }
+}
+</code></pre>
+
+<p>Once you make changes, commit the changes to <code>feature/workerpipe</code> and push to GitHub.</p>
+<pre><code>git status
+git add worker/Jenkisfile
+git commit -am &quot;run package step only on master, run stages only worker changes &quot;
+git push origin feature/workerpipe
+</code></pre>
+
+<p>After making this changes, you would notice that the build it will run only for first two stages and  skip package stage with artifacts.</p>
+<p><code>Warning: Even though Jenkinsfile is part of the worker subpath, its not considered as part of the changeset to trigger the builds. You would need to make changes to other files in order to see the jobs being triggered.</code></p>
+<p>You could make some changes in README.md file in root directory and commit those chanegs, push into <code>feature/workerpipe</code>. Build will be trigger but it will skip all three stages.</p>
+<p>You don't need this conditional build always, use git log and reset to go back your previous commit.</p>
+<pre><code>git log
+git reset --hard yourlastcommitid
+git push origin feature/workerpipe -f
+</code></pre>
+
+<p>Now you have learned how to use conditional pipeline stages.</p>
+<h2 id="integrating-slack-with-jenkins-optional">Integrating slack with jenkins [optional]</h2>
+<p><code>this is an optional section. Refer to it only if you wish to integrate with slack for notifications</code></p>
+<p>Here you will learn, how to integrate slack with jenkins and this will helpful to send notifications related to your build from jenkins to slack channel.</p>
+<p>Prerequsite for this, you need a slack account and you should be the slack channel administrator.</p>
+<p>Follow the following steps to complete this setup.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li>
+<p>create slack account and create a channel with the name of <code>instavote-cd</code>.
+<img alt="" src="../images/jenkinsfile6.png" /></p>
+</li>
+<li>
+<p>After creating the channel, go to <code>administrator -&gt; manage apps</code>. It will open a browser window.  search <code>Jenkins CI</code> and select configure. From the configuration pagechoose  <code>instavote-cd</code> and add jenkins integration, it will show step by step process to setup jenkins configuration.</p>
+</li>
+<li>
+<p>Go to your jenkins, <code>manage jenkins -&gt; manage plugins -&gt; available plugins</code> search <code>slack notification</code> plugin and install.</p>
+</li>
+<li>
+<p>Go to <code>manage jenkins -&gt; configure system</code>, at the bottom you could find Global slack notifier settings. copy your <code>team sub domain</code> from slack configure page which you got in previous step and add in jenkins page.</p>
+</li>
+<li>
+<p>Add integration credential id, that is secret text, add a secret text using integration token credential id given in slack jenkins configuration page.   </p>
+</li>
+<li>
+<p>Add your channel id as <code>instavote-cd</code> and save the configuration.
+  <img alt="" src="../images/jenkinsfile7.png" /></p>
+</li>
+<li>
+<p>From the browser's slack configuration page,  click on save the configuration atleast onec, to enable the notification.</p>
+</li>
+<li>
+<p>Now from your Jenkins, choose any job and go to the configuration page.  Add <code>slack notification</code> as the post build action. Save  and build the job. Voila !  Now you could see the notifications right into  your slack channel.</p>
+</li>
+</ul>
+<h3 id="sending-notifications-from-a-pipeline-job">Sending notifications from a pipeline job</h3>
+<p>You could add slack notifications to any pipeline job with slackSend directives. You would have to set up the intgration as desribed above before you attempt this.</p>
+<p>Following is a code snipped, which demonstrates how to achieve this.</p>
+<p><code>file: worker/Jenkinsfile</code></p>
+<pre><code>pipeline {
+  agent any
+
+  tools{
+    maven 'maven 3.6.1'
+
+  }
+
+  stages{
+      stage(build){
+        when{
+            changeset &quot;**/worker/**&quot;
+          }
+
+        steps{
+          echo 'Compiling worker app..'
+          dir('worker'){
+            sh 'mvn compile'
+          }
+        }
+      }
+      stage(test){
+        when{
+          changeset &quot;**/worker/**&quot;
+        }
+        steps{
+          echo 'Running Unit Tets on worker app..'
+          dir('worker'){
+            sh 'mvn clean test'
+           }
+
+          }
+      }
+      stage(package){
+        when{
+          branch 'master'
+          changeset &quot;**/worker/**&quot;
+        }
+        steps{
+          echo 'Packaging worker app'
+          dir('worker'){
+            sh 'mvn package -DskipTests'
+            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
+          }
+
+        }
+      }
+  }
+
+  post{
+    always{
+        echo 'Building multibranch pipeline for worker is completed..'
+    }
+    failiure{
+      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
+    }
+    success{
+      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
+    }
+  }
+}
+</code></pre>
+
+<p>Once you make changes in Jenkinsfile, commit and push to <code>feature/workerpipe</code> branch.</p>
+<pre><code>git status
+git add worker/Jenkisfile
+git commit -am &quot;add slack notifications&quot;
+git push origin feature/workerpipe
+</code></pre>
+
+<p>After push the changes to branch, the pipeline will build automatically and send notification to slack. From slack you will get link to visit the build status of your job.</p>
+<p>Since this  feature is complete, it is time to merge it all into the master and delete this feature branch.  You could raise a pull request, get it reviewed, observe the CI feedback right onto the pull request page, before you merge it to the master. Once merged, dont forget to delete the branch from remote repo  as well as from the local workspace.</p>
+<h2 id="assignment-writing-jenkinsfile-for-result-app">Assignment: Writing  Jenkinsfile for result app</h2>
+<p>You have been tasked to write declarative pipeline for result application.</p>
+<ul>
+<li>Two stages, build and test</li>
+<li>Stages should run conditinoally only when there is a change to <strong>result</strong> subdir</li>
+<li>You could refer the  workflow following</li>
+</ul>
+<p><img alt="" src="../images/jenkinsfile8.png" /></p>
+<p><a href="../jenkinsfile/solutions.md">You could reference this page to observer the solution.</a></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dockerjenkins/" class="btn btn-neutral float-right" title="Lab 5 - Using Docker to Simplify Jenkins Pipeline">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../jenkins/" class="btn btn-neutral" title="Lab 3 - Setting up CI Pipeline with Jenkins"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../jenkins/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../dockerjenkins/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Using Docker to Simplify CI Pipelines - CI/CD Lab Guide</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Using Docker to Simplify CI Pipelines";
+    var mkdocs_page_input_path = "cipipeline.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CI/CD Lab Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerintro/">Lab 1 - Docker for CI/CD</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../git/">Lab 2 - Revision Control with Git</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkins/">Lab 3 - Setting up CI Pipeline with Jenkins</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkinsfile/">Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerjenkins/">Lab 5 - Using Docker to Simplify Jenkins Pipeline</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerfile/">Lab 6 - Packaging Applications with Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../devdeploycompose/">Lab 7 - Deploy to Dev with Compose</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Lab 8 - Adding Automated Testing</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CI/CD Lab Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Using Docker to Simplify CI Pipelines</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="using-docker-to-simplify-ci-pipelines">Using Docker to Simplify CI Pipelines</h1>
+<p>In this Lab, you will learn how to prepare jenkins for docker agent based build, refactoring maven jobs with docker agent and how to build nodejs app with docker. How to write jenkinsfile for python based vote app and how to troubleshoot docker agent jobs, pull requests, code review and merge to master branch and you have assignment as well.</p>
+<h3 id="preparing-jenkins-for-docker-agent-based-builds">Preparing jenkins for docker agent based builds</h3>
+<p>Here you will learn, how to prepare your jenkins server for docker based build, refer <a href="https://jenkins.io/doc/book/pipeline/docker/">docker-with-pipeline</a> document.</p>
+<p>Create <code>docker-pipe-01</code> pipeline job in your jenkins. In configuration page, mention the following test code in jenkins script and save the configuration and build it.</p>
+<pre><code>pipeline {
+    agent {
+        docker { image 'node:7-alpine' }
+    }
+    stages {
+        stage('Test') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>If you run the build, it shows build will be failed because docker is not installed on your jenkins container, so you need to install docker inside the jenkis container and use the following command to install docker inside jenkins container.</p>
+<pre><code>* docker ps
+* docker exec -u root -it jenkins bash
+* apt-get update
+*  apt-get install apt-transport-https ca-certificates curl gnupg2 software-properties-common
+* curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+* apt-key fingerprint 0EBFCD88
+* add-apt-repository &quot;deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable&quot;
+* apt-get update
+* apt-get install docker-ce docker-ce-cli containerd.io
+</code></pre>
+
+<p>Refer the docker install documentation for  <a href="https://docs.docker.com/install/linux/docker-ce/debian/">docker-install</a> debian.</p>
+<p>After installing docke, run the following commands to check the docker version.</p>
+<pre><code>* which docker
+* docker version
+</code></pre>
+
+<p>Run the hello world container inside the jenkins container to validate docker.</p>
+<pre><code>docker run hello-world
+</code></pre>
+
+<p>Now run the build, agin you will get permission denied error, because jenkins user not a part of docker group. use following command inside jenkins container to add jenkins user into docker group and validate.</p>
+<pre><code>* usermod -a -G docker jenkins
+* docker ps
+</code></pre>
+
+<p>After adding jenkins user to docker group, exit from jenkins container and restart the container by using following command.</p>
+<pre><code>docker restart jenkins
+</code></pre>
+
+<p>Goto jenkins page and build the job, the pipeline will be successfull and your jenkisn serever is ready to run docker based build.</p>
+<h3 id="refactoring-maven-jobs-with-docker-agent">Refactoring maven jobs with docker agent</h3>
+              
+            </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

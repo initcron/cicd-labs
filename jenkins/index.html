@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Lab 3 - Setting up CI Pipeline with Jenkins - CI/CD Lab Guide</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Lab 3 - Setting up CI Pipeline with Jenkins";
+    var mkdocs_page_input_path = "jenkins.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CI/CD Lab Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerintro/">Lab 1 - Docker for CI/CD</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../git/">Lab 2 - Revision Control with Git</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Lab 3 - Setting up CI Pipeline with Jenkins</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#setting-up-continuous-integration-with-jenkins">Setting up Continuous Integration with Jenkins</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#setup-jenkins-with-docker">Setup Jenkins with Docker</a></li>
+        
+            <li><a class="toctree-l3" href="#creating-first-jenkins-job">Creating first Jenkins Job</a></li>
+        
+            <li><a class="toctree-l3" href="#configuring-build-triggers">Configuring Build Triggers</a></li>
+        
+            <li><a class="toctree-l3" href="#creating-a-job-pipeline">Creating a Job pipeline</a></li>
+        
+            <li><a class="toctree-l3" href="#integrating-github-with-jenkins-optional">Integrating Github with Jenkins  [Optional]</a></li>
+        
+            <li><a class="toctree-l3" href="#assignment-create-a-pipeline-for-the-nodejs-app">Assignment - Create a pipeline for the Nodejs app</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkinsfile/">Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerjenkins/">Lab 5 - Using Docker to Simplify Jenkins Pipeline</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerfile/">Lab 6 - Packaging Applications with Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../devdeploycompose/">Lab 7 - Deploy to Dev with Compose</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Lab 8 - Adding Automated Testing</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CI/CD Lab Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Lab 3 - Setting up CI Pipeline with Jenkins</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="setting-up-continuous-integration-with-jenkins">Setting up Continuous Integration with Jenkins</h1>
+<p>Following are the learning objectives with this lab</p>
+<ul>
+<li>you will begin by setting up Jenkins using docker</li>
+<li>take a walkthrough of Jenkins web interface and essential configurations</li>
+<li>start creating freestyle and maven jobs</li>
+<li>integrate with tools such as nodeJS  and maven</li>
+<li>integrate with GitHub and setup build triggers  and.</li>
+<li>setup a pipelines which run  automated builds  and unit tests</li>
+</ul>
+<h2 id="setup-jenkins-with-docker">Setup Jenkins with Docker</h2>
+<p>Here you are going learn, how to setup jenkins using docker. prerequisite for this is docker installation.</p>
+<p>You could run a jenkins container on your docker host by using official jenkins image with the version <code>2.178-Slim</code>. Use following command to launch the jenkins container,</p>
+<pre><code>docker container run -idt --name jenkins -P -p 8080:8080 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:2.204-slim
+</code></pre>
+
+<p><img alt="" src="../images/jenkins1.png" /></p>
+<p>You could access  jenkins UI by browsing to  <code>http://IPADDRESS:8080</code>  </p>
+<p><img alt="" src="../images/jenkins2.png" /></p>
+<p>To fetch the initialAdminPassword  use the following command</p>
+<pre><code>docker logs jenkins
+</code></pre>
+
+<p>and paste it on the Jenkins UI to unlock.</p>
+<p>In the next step , choose install suggested plugins to configure the default plugins automatically.</p>
+<p>Once plugins are  installed, you will  create the  admin user using the form presented.
+<img alt="" src="../images/jenkins3.png" /></p>
+<p>completing this process will get you to jenkins main page where you could get started creating jobs from.</p>
+<h2 id="creating-first-jenkins-job">Creating first Jenkins Job</h2>
+<p>After setting up jenkins, its now time to create your first jenkins job and run it.</p>
+<p>You could create jenkins job to build one of the applications with the instavote sample app you have learnt about.  You need to create your version of this app by forking it. Visit <a href="https://github.com/lfs261/example-voting-app">example-voting-app on Github</a> and fork the repository onto your git account.</p>
+<p>Once you forked the repository, goto jenkins dashboard and clickon <strong>create new Jobs</strong>.</p>
+<p>Now you are going to create a <code>freestyle</code> job with the name of <code>job-01</code> and click ok to configure your job. You will get job configuration page where you could choose the following options.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li>Goto <code>job-01</code> cofiguration page, add description of your job.  </li>
+<li>Under source code management choose git and provide your project repository url copied from github repo.<br />
+<img alt="" src="../images/jenkins4.png" />  </li>
+<li>
+<p>Next select  <strong>build</strong> tab  and choose <strong>execute shell</strong> to run following commands</p>
+<p><code>ls -ltr
+ sleep 10</code>
+<img alt="" src="../images/jenkins5.png" /></p>
+</li>
+<li>
+<p>once you fill in the build step,  save the job configuration page.</p>
+</li>
+<li>
+<p>Goto your project page , choose build option to build your job. Once your build finished, click on your build and check build execute status.
+  <img alt="" src="../images/jenkins6.jpg" /></p>
+</li>
+<li>
+<p>Every build you could see build status, it will store logs of your build.</p>
+</li>
+<li>
+<p>Observe the color coding in the build status. If your job is successful it will show as blue, if it fails you could see it turn red</p>
+</li>
+</ul>
+<h3 id="configuring-a-maven-build-job">Configuring a maven build job</h3>
+<p>You have already  created a simple, freestyle project with name  <em>job-01</em> and tested it. Now is the time to build the <strong>worker</strong> application as part of the instavote project, which is a  java application that uses  maven as a build tool.  </p>
+<p>You could follow the following steps to configure maven build job.</p>
+<p><strong>Steps:</strong></p>
+<ul>
+<li>
+<p>Goto <code>manage jenkins -&gt; global tools configuration</code> and under maven section, provide name as <code>maven 3.6.1</code> and select the maven version <code>3.6.1</code>, save those changes.
+<img alt="" src="../images/jenkins8.png" /></p>
+</li>
+<li>
+<p>Install <code>Maven integration</code> plugin.  Goto <code>Manage Jenkins =&gt; Manage Plugins =&gt;  Available</code>,search for <strong>Maven Integration</strong> plugin and install it without restart.
+<img alt="" src="../images/jenkins7.png" /></p>
+</li>
+<li>
+<p>Create <code>instavote</code> folder for your project which serves as a namespace. Do so by creating a new job with type <strong>folder</strong> with name <em>instavote</em></p>
+</li>
+<li>
+<p>Switch to instavote folder, create a new project and select <strong>Maven</strong> as the type of project. Name the job as <strong>worker-build</strong></p>
+</li>
+<li>
+<p>Next goto source code management, provide your git repository url</p>
+</li>
+<li>
+<p>Go to  build step and provide the  goal and option as <code>compile</code>.
+<img alt="" src="../images/jenkins9.png" /></p>
+</li>
+<li>
+<p>At the build step, you would also need to provide the  path to pom.xml, which in the worker subdirectory of the repo.  e.g. worker/pom.xml as
+<img alt="" src="../images/jenkins10.png" /></p>
+</li>
+</ul>
+<p>Save the job and build. Observe the job status, console output etc.   </p>
+<h3 id="adding-unit-test-and-packaging-jobs">Adding unit test and packaging jobs</h3>
+<p>After creating the build job, its now time to add test and package jobs for the worker application.</p>
+<p>You need to create one more job on your same folder and name it as <code>worker-test</code>, while creating <code>worker-test</code> copy <code>worker-build</code> job. Follow following steps to complete the configuration.</p>
+<p>Steps</p>
+<ul>
+<li>
+<p>In <code>worker-test</code> job , change your description as <code>test worker java app</code>. Source code management,repository is same .</p>
+</li>
+<li>
+<p>under build step, change the goals and option as <code>clean test</code> and remaining will be same, so save the job and build.
+<img alt="" src="../images/jenkins11.png" /></p>
+</li>
+<li>
+<p>Next job is <code>worker-package</code>, this will compile the application and then generate the jar file. Create a job on same folder with the name of <code>worker-package</code>, while creating
+job copy <code>worker-test</code> or <code>worker- build</code> job.</p>
+</li>
+<li>
+<p>Update the description as <code>package worker java app, create jar</code> and only change in the configuration is build step.</p>
+</li>
+<li>
+<p>In the build step for the package job,  change the goal  to <code>package -DskipTests</code>, save the changes and build.</p>
+</li>
+<li>
+<p>After build succesful, you could see the jar file created in the  workspace. Example is given following , you can verify your workspace by using it.
+<img alt="" src="../images/jenkins12.png" /></p>
+</li>
+<li>
+<p>From the  post build actions, choose archive artifacts and provide path <code>**/target/*.jar</code> to store the jar file.
+<img alt="" src="../images/jenkins13.png" /></p>
+</li>
+<li>
+<p>Save the changes and build the job. Once build succesful, check the project page  to find out your artifacts right out there.</p>
+</li>
+</ul>
+<h2 id="configuring-build-triggers">Configuring Build Triggers</h2>
+<p>You could use anything under build triggers for automatic build, but now you are going to use <code>poll scm</code> under build triggers.</p>
+<ul>
+<li>goto your <code>worker-build</code> job configuration page and choose <code>poll SCM</code> under build triggers. In that poll scm mention schedule for  periodically polling the git repository.</li>
+</ul>
+<pre><code>H/2 * * * *
+</code></pre>
+
+<ul>
+<li>
+<p>Once you made changes, save the job. goto your job page there you will find <code>Git polling log</code>, check your polling logs by using Git polling log.
+  <img alt="" src="../images/jenkins14.png" /></p>
+</li>
+<li>
+<p>Now you are going to use <code>Trigger builds remotely</code> in build trigger. provide your authentication token randomly and save it. Use the following example to trigger the build using browser.
+  <img alt="" src="../images/jenkins15.png" /></p>
+</li>
+<li>
+<p>You should get a trigger URL mentioned just below where you defined the token on Jenkins job configuration page. Generate your custom  trigger URL similar to following  </p>
+</li>
+</ul>
+<p><code>http://localhost:8080/job/instavote/job/worker-build/build?token=yourauthenticationtoken</code></p>
+<ul>
+<li>
+<p>If you paste this URL on the browser, since you are already authenticated, you should see the job launched automatically.  </p>
+</li>
+<li>
+<p>You could also trigger the build using a command line interface or programtically from external code by providing the api token.  </p>
+</li>
+<li>
+<p>To create the api token by browsing to  <code>jenkins -&gt; people -&gt; admin -&gt; configure</code> as shown in the following image.<br />
+<img alt="" src="../images/jenkins16.png" /></p>
+</li>
+<li>
+<p>Copy the api token to generate a remote trigger URL similar to following,</p>
+</li>
+</ul>
+<p><code>http://admin:TOKEN@localhost:8080/job/instavote/job/worker-build/build?token=yourauthenticationtoken</code></p>
+<ul>
+<li>Test trigger the build using a curl command or equivalent
+  <code>curl http://admin:yourapitoken@localhost:8080/job/instavote/job/worker-build/build?token=yourauthenticationtoken</code></li>
+</ul>
+<p>The above instructions  demonstrate  how to trigger builds remotely.</p>
+<h2 id="creating-a-job-pipeline">Creating a Job pipeline</h2>
+<p>Here you will learn, how to links the  jobs by defining upstreams and downstreams. You would also go on to create a pipeline view using a plugin.</p>
+<p>Follow the following steps to setup upstream and downstream</p>
+<ul>
+<li>
+<p>From <code>woker-build</code> job configuration page, scroll all the way to <strong>post build actions</strong>, this is where you could define the downstream job. Provide <code>worker-test</code> as the job to build and save.
+  <img alt="" src="../images/jenkins17.png" /></p>
+</li>
+<li>
+<p>Now you are going to setup upstream for <code>worker-package</code>. goto <code>worker-package</code> configuration page. From <strong>build triggers</strong>, check the box for  <code>build after other projects are built</code>  Provide upstream project name as <code>woker-test</code>job
+  <img alt="" src="../images/jenkins18.png" /> this defines the upstream for worker-package.</p>
+</li>
+</ul>
+<p>Once upstreams and  downstreams are defined, run <code>worker-build</code> and it will automatically run <code>worker-test</code> &amp; <code>worker-package</code>.</p>
+<h3 id="setup-pipeline-view">Setup Pipeline View</h3>
+<p>Now you are going to setup pipeline view for this build jobs,</p>
+<ul>
+<li>
+<p>Begin by installing  <code>build pipeline</code> plugin from manage jenkins page.</p>
+</li>
+<li>
+<p>From jenkins console, create a new view. Select type as pipeline view and provide name for it.</p>
+</li>
+<li>
+<p>From the  configuration page,  select the first job in the pipeline and select number of builds as 5, save it.
+<img alt="" src="../images/jenkins19.png" /></p>
+</li>
+<li>
+<p>Once you complete, you could see build pipeline of your job. Green is successful, red is failed and blue is to do, yellow is in progress.</p>
+</li>
+</ul>
+<p>You have just completed creating a pipeline for a java project.</p>
+<h2 id="integrating-github-with-jenkins-optional">Integrating Github with Jenkins  [Optional]</h2>
+<p><code>Warning: This would work only if your Jenkins server is available  publically and can be accessed from github. In case you are running Jenkins on your local machine e.g. laptop, with a private IP space, this will not work.</code></p>
+<p>Here you will learn, how to integrate github with jenkins and trigger build automatically using github webhooks.</p>
+<h3 id="setting-up-build-triggers-using-github-webbooks">Setting up build triggers using Github webbooks</h3>
+<p>You could trigger your job when there is a commit changes in master branch. webhook will be trigger your job from github side and even you could send status back to github, so you don't need polling.</p>
+<p>Follow these steps to set up the webhook</p>
+<ul>
+<li>
+<p>To setup a  github token, go to github's  user page and select <code>settings -&gt; choose developer settings -&gt; select personal access token</code>. In the personal access token page select <code>generate new token</code>, add a note  and generate it. once you generate your token save it somewhere, because  you can't view it again.
+<img alt="" src="../images/jenkins20.png" /></p>
+</li>
+<li>
+<p>Now go to jenkins page, <code>manage jenkins -&gt; configure system</code>, choose github to add github server. provide name of your github account and add your credentials like following image,
+<img alt="" src="../images/jenkins21.png" />
+here secret is your github secret id and you need to provide your id description, save it.</p>
+</li>
+<li>
+<p>Choose credentials as <code>secret token github</code> and check the manage hooks. save the configuration once you complete .
+<img alt="" src="../images/jenkins22.png" /></p>
+</li>
+<li>
+<p>Go to your <code>worker-build</code> configure page, choose <code>github project</code> and provide  repository url . Remove poll scm and choose github hook trigger for gitscm polling, save the changes.</p>
+</li>
+<li>
+<p>Again go to  github repository and choose <code>settings -&gt; webhooks</code>, add payload url and content type as application/json, save it(refer example image given following).
+<img alt="" src="../images/jenkins23.png" /></p>
+</li>
+<li>
+<p>Now go to git repository, add some file in your repository and commit the changes.</p>
+</li>
+<li>
+<p>Once you make commit on your repository, it will automatically trigger your build. You could see it by using build pipeline which you have created.</p>
+</li>
+</ul>
+<p>This is how you could integrate github with jenkins.</p>
+<h3 id="adding-jenkins-status-badges-to-github-optional">Adding Jenkins Status Badges to Github [Optional]</h3>
+<p><code>Warning: This works only if Jenkins server is accessible from github.</code></p>
+<p>With this sub section, you are going to setup two way communication between jenkins and github. you could send the status of the build from jenkins to the github and display it as a badge.</p>
+<p>You need to install <code>Embeddable Build Status</code> plugin from <code>manage jenkins -&gt; manage plugin -&gt; Available</code>. Once installation done, you could see Embeddable build status on your every job page.</p>
+<p>Follow the following steps to add jenkins status badge to github</p>
+<ul>
+<li>
+<p>Go to  <code>worker-build</code> job page,  select embeddable build status. In that embeddable status page, copy <code>markdown unprotected link</code> under <code>links</code> and paste it on your github repository README.md file which you have created last lab and commit the changes.   </p>
+</li>
+<li>
+<p>Once you make commit changes, you could see <code>build status  passing</code> on your same README.md file and if you see jenkins job, it will automatically triggers the build which you have created.
+<img alt="" src="../images/jenkins24.png" /></p>
+</li>
+<li>
+<p>goto <code>worker-build</code> configuration page, under build step change the root file as <code>pom.xml</code> instead of <code>worker/pom.xml</code> and save the changes.</p>
+</li>
+<li>
+<p>Build your <code>worker-build</code> job, it will fail your build. Now goto github repository page there you could see build failed status.</p>
+</li>
+<li>
+<p>Correct your <code>worker-build</code> and add the embeddable build status <code>markdown unprotect link</code> of worker-test &amp; worker-package to your github repository README.md file and test it by your self.</p>
+</li>
+</ul>
+<p>This how you could add jenkins status badge to github.</p>
+<h3 id="configuring-job-status-with-commit-messages">Configuring Job status with commit messages</h3>
+<p>Here you will learn, how to configure build &amp; test job status with github commit messages.</p>
+<p>Follow the following steps to configure job status</p>
+<ul>
+<li>
+<p>Goto your <code>worker-build</code> job configuration page, under post build action choose <code>Set github communication status (universal)</code> and make status result as <code>One of default messages and statuses</code>, save the changes.
+  <img alt="" src="../images/jenkins25.png" /></p>
+</li>
+<li>
+<p>Copy your <code>github project url</code> form worker-build and paste it on <code>worker-test</code> and add the post build action <code>Set github communication status(universal)</code> for <code>worker-test</code> as well. refer previous step to add post build action.</p>
+</li>
+<li>
+<p>Now goto your <code>worker-test</code> job page, there select embeddable build status. In that embeddable status page, copy <code>markdown unprotected link</code> under <code>links</code> and paste it on your github repository README.md file, add <code>subject=Unittest</code> with your <code>worker-test</code> link. Refer example image given following.
+  <img alt="" src="../images/jenkins26.png" /></p>
+</li>
+<li>
+<p>Once you commit the changes, it will automatically build the triggers. you could see the builds in pipeline view and the status will be updated on the github.</p>
+</li>
+<li>
+<p>If you check your commit messages it show the as check marked. even you could see all the current build status with build number on git commit message. If you click details in commit
+  message, it will take you to jenkins page.</p>
+</li>
+<li>
+<p>You could change the <code>worker-build</code> git status color by adding following subject in your git repository <code>README.md</code>file.</p>
+</li>
+</ul>
+<p><code>[![Build Status](http://localhost:8080/buildStatus/icon?job=instavote%2Fworker-build&amp;subject=Build&amp;color=blue)](http://localhost:8080/job/instavote/job/worker-build/)</code>
+  * After updating the changes in <code>README.md</code> commit the file . It will triggers the pipeline. This time build will fail and you could see build color has changed in git status message.</p>
+<ul>
+<li>
+<p>If the build is failed, git commit message will be in red mark.</p>
+</li>
+<li>
+<p>Fix your <code>worker-test</code> job and save the changes, by providing correct path and add <code>pre steps</code> from configuration, choose <code>set build status "pending" on GitHub commit</code> and save the configuration.</p>
+</li>
+<li>
+<p>Make one more commit in your git repository <code>README.md</code> file by using following code and commit the file.
+  <code>[![Build Status](http://localhost:8080/buildStatus/icon?job=instavote%2Fworker-test&amp;subject=UnitTest&amp;color=pink)](http://localhost:8080/job/instavote/job/worker-test/)</code></p>
+</li>
+<li>Once you commit the file it will trigger the build but in commit message you could see pending state till the build get finish and whenever it get finished the status will be change with the check mark.</li>
+</ul>
+<p>This is how you could configure job status to git commit message.</p>
+<h2 id="assignment-create-a-pipeline-for-the-nodejs-app">Assignment - Create a pipeline for the Nodejs app</h2>
+<p>Here you need to create pipeline for result application and use build tool as npm.</p>
+<p>Create tow jobs, first one<code>result-build</code> job will run npm install after git chekin with downstream of second job.<code>result-test</code>is second job, it will run npm test. These two will be triggered automatically via a webhook.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../jenkinsfile/" class="btn btn-neutral float-right" title="Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../git/" class="btn btn-neutral" title="Lab 2 - Revision Control with Git"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../git/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../jenkinsfile/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

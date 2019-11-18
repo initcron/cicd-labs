@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Lab 1 - Docker for CI/CD - CI/CD Lab Guide</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Lab 1 - Docker for CI/CD";
+    var mkdocs_page_input_path = "dockerintro.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CI/CD Lab Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Lab 1 - Docker for CI/CD</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#lab-getting-started-with-docker">Lab: Getting started with docker</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#validating-the-setup">Validating the setup</a></li>
+        
+            <li><a class="toctree-l3" href="#launching-your-first-container">Launching your first container</a></li>
+        
+            <li><a class="toctree-l3" href="#listing-containers">Listing Containers</a></li>
+        
+            <li><a class="toctree-l3" href="#learning-about-images">Learning about images</a></li>
+        
+            <li><a class="toctree-l3" href="#default-run-options">Default run options</a></li>
+        
+            <li><a class="toctree-l3" href="#launching-and-connecting-to-web-applications">Launching and connecting to Web Applications</a></li>
+        
+            <li><a class="toctree-l3" href="#troubleshooting-containers">Troubleshooting Containers</a></li>
+        
+            <li><a class="toctree-l3" href="#summary">Summary</a></li>
+        
+            <li><a class="toctree-l3" href="#exercises">Exercises</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../git/">Lab 2 - Revision Control with Git</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkins/">Lab 3 - Setting up CI Pipeline with Jenkins</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkinsfile/">Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerjenkins/">Lab 5 - Using Docker to Simplify Jenkins Pipeline</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerfile/">Lab 6 - Packaging Applications with Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../devdeploycompose/">Lab 7 - Deploy to Dev with Compose</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Lab 8 - Adding Automated Testing</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CI/CD Lab Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Lab 1 - Docker for CI/CD</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="lab-getting-started-with-docker">Lab: Getting started with docker</h1>
+<p>In this lab, you will learn</p>
+<ul>
+<li>How to launch containers with docker</li>
+<li>Common options used with docker container run command</li>
+<li>Run web applications and access those with port mapping  and</li>
+<li>Learn how to manage container lifecycle and to debug those.</li>
+</ul>
+<h3 id="validating-the-setup">Validating the setup</h3>
+<p>Begin by checking the  version of docker installed with,</p>
+<pre><code>docker version
+</code></pre>
+
+<p>you could further validate r by running a smoke test as,</p>
+<pre><code>docker run hello-world
+</code></pre>
+
+<p>This should launch a container successfully and show you hello world message. This smoke test validates the following,</p>
+<ul>
+<li>you have docker client installed</li>
+<li>docker daemon is up and running</li>
+<li>docker client is been correctly configured and authorized to talk to docker daemon</li>
+<li>you have non blocking internet connectivity</li>
+<li>you are able to pull an image from docker registry and run a container with it</li>
+</ul>
+<h3 id="launching-your-first-container">Launching your first container</h3>
+<p>Before you begin launching your first container, open a new terminal and run the following command to analyze the events on the docker daemon side.</p>
+<pre><code>docker system events
+</code></pre>
+
+<p>When you launch the above command, you may not see any output. Keep that window open, and it would start streaming events as you proceed to use docker cli further.</p>
+<p>Now launch your first  container with the following command,</p>
+<pre><code>
+docker container run centos ps
+
+</code></pre>
+
+<p>Where,</p>
+<ul>
+<li>docker is the command line client</li>
+<li><strong>container run</strong>  is the command to launch a container. You could alternately use just <strong>run</strong> command here</li>
+<li>centos is the image</li>
+<li>ps is the actual command which is run inside this container.</li>
+</ul>
+<p>Next go ahead and try creating a few more containers with the same imafge but with  different commands as,</p>
+<pre><code>docker container run centos uptime
+docker container run centos uname -a
+docker container run centos free
+</code></pre>
+
+<p>you could check the events in the window where you have started running  <code>docker system events</code> command earlier. It shows whats happening on docker daemon side.</p>
+<h3 id="listing-containers">Listing Containers</h3>
+<p>you can check your last run container using following commands,</p>
+<pre><code>docker ps -l
+docker ps -n 2
+docker ps -a
+</code></pre>
+
+<p>where
+  * -l : last run container
+  * -n xx : last xx number of containers
+  * -a : all containers (even if they are in stopped state )</p>
+<h3 id="learning-about-images">Learning about images</h3>
+<p>Containers are launched using images, which are pulled from registry. Observe following command,</p>
+<p><code>docker container run centos ps</code>
+ Here the image name is <strong>centos</strong> which can actually expanded to</p>
+<p><code>registry.docker.io/docker/centos:latest</code></p>
+<p>where following are the fields,</p>
+<ul>
+<li>registry: registry.docker.io</li>
+<li>namespace: docker</li>
+<li>repo: centos</li>
+<li>tag: latest</li>
+</ul>
+<p>You could use following commands to list your images from your local machine and pull the image from docker-hub. You could even examine the layers of an image  with <em>history</em> command.</p>
+<pre><code>docker image ls
+
+docker image pull nginx
+
+docker image history nginx
+
+</code></pre>
+
+<h3 id="default-run-options">Default run options</h3>
+<p>You have learnt how to launch a container. However, its ephemeral, and exits immediately after running the command. To make the container persist, and in order to be able to interact with it, lets try adding a couple of new options.</p>
+<pre><code>docker run -it centos bash
+</code></pre>
+
+<p>where,
+  * -i : interactive. provides standard in to the process running inside the container
+  * -t : provides a pseudo terminal in order to interact</p>
+<p>You could further add <em>--rm</em> options to ensure the container is deleted when stopped.</p>
+<pre><code> docker run --rm -it alpine sh
+</code></pre>
+
+<p>Another useful and important option is <em>-d</em>, which will launch the process in a contained environment, and detach from it. This allows the container to keep running in the background.</p>
+<pre><code>docker container run -idt --name redis redis:alpine
+</code></pre>
+
+<h3 id="launching-and-connecting-to-web-applications">Launching and connecting to Web Applications</h3>
+<p>So far, you have launched a few simple containers, with one off commands. Its time to now learn how to launch a web application, and learn how to connect to it.  </p>
+<p>You could launch a container with nginx web server as follows. Observe the new <em>-p</em> option.</p>
+<pre><code> docker container run -idt -p 8080:80 nginx
+</code></pre>
+
+<p>where,</p>
+<ul>
+<li>-p allows you to define a port mapping</li>
+<li>8080 is host side port</li>
+<li>80 is the container side port, the one on which application is listening  </li>
+</ul>
+<p>Once you configure  the port mapping, access that application on your browser by visiting</p>
+<p><code>http://IPADDRESS:8080</code></p>
+<p><code>replace IPADDRESS with the *actual IP* in case your docker host is remote, or with *localhost* if using Docker Desktop.</code></p>
+<p>With the command above using <em>-p</em> option you explitly defined the host side port. You could also have docker pick the port automatically with  <code>-P</code> option.</p>
+<pre><code>docker container run -idt -P nginx
+
+</code></pre>
+
+<ul>
+<li>where host port is automatically chosen and incremented starting with 32768</li>
+<li>container port is automatically read from the image</li>
+</ul>
+<p>As usual you could use <code>docker ps</code> commands to observe the port mapping.</p>
+<h3 id="troubleshooting-containers">Troubleshooting Containers</h3>
+<p>To  debug issues with the  containers, which are nothing but processes running in an isolated environment,  following could be two important tasks ,</p>
+<ul>
+<li>checking process logs</li>
+<li>being able to establish a connecting inside container (simiar to ssh)</li>
+</ul>
+<p>You would learn about both in this sub section.</p>
+<p>To start examining logs find your container id or container name using</p>
+<pre><code>
+docker ps
+
+</code></pre>
+
+<p>You could use the following command to find out logs for a container whose name is <em>redis</em></p>
+<pre><code> docker logs redis
+
+</code></pre>
+
+<p>You have an option of replacing <em>redis</em> name with the actual container id ( the first column in the output of  docker ps command ).</p>
+<p>you can follow the logs using <code>-f</code> option and <code>docker exec</code> allows you to run a command inside a container.</p>
+<pre><code> docker logs -f redis
+</code></pre>
+
+<p><strong>exec</strong> command allows you connect to the container and launch a shell inside it, similar to a ssh connection. It also allows running one off commands.</p>
+<pre><code>  docker exec redis ps
+  docker exec -it redis sh
+
+</code></pre>
+
+<p>With  <strong>logs</strong> and <strong>exec</strong> commands which you should be able to get started with essential debugging.</p>
+<h2 id="summary">Summary</h2>
+<p>You learnt about the basics of container operations. This foundation would help you through out the course as we plan to use docker extensively as part of the Continuous Integration  and later with Continuous Delivery.</p>
+<h2 id="exercises">Exercises</h2>
+<p>With the knowledge that you have gained so far, you have been tasked with setting up the following two apps with docker</p>
+<ul>
+<li><a href="https://nextcloud.com/">Nextcloud</a></li>
+<li><a href="https://www.portainer.io/">Portainer</a></li>
+</ul>
+<p>Try launching it on your own before you proceed with the <a href="../dockerintro/solutions.md">solutions given here</a>.</p>
+<h3 id="stop-remove-and-cleanup">Stop, remove and cleanup</h3>
+<p>Here you will learn how to stop, remove and cleanup the containers which you have created.</p>
+<p>Find your container id and stop the container before you are going to remove and you can pause and unpause the container as well.</p>
+<pre><code>docker ps
+docker stop redis
+docker stop b584 84e6 e4da
+</code></pre>
+
+<p>where  </p>
+<ul>
+<li>ac69 b584 84e6 e4da are container ids</li>
+<li>these  could vary on your system. Use the ones you see when you run <code>docker ps</code></li>
+</ul>
+<p>you can start a container thats is in stopped state with,</p>
+<pre><code>docker start redis
+</code></pre>
+
+<p>To remove a container(destructive process) that is been stopped use,  </p>
+<pre><code>docker stop redis
+docker rm  redis
+</code></pre>
+
+<p>If the container is in running state, it can not be stopped unless a force optin is used.</p>
+<pre><code>docker container run -idtP --name web nginx  
+
+docker rm web
+
+docker rm -f web
+</code></pre>
+
+<p>Images are independent of containers which are its run time instance. You could further remove the images using commands such as,</p>
+<pre><code>docker image rm 4206
+docker image rm 4f1 4d9 4c1 9f3
+docker image  prune
+</code></pre>
+
+<p>where, 4206 4f1 4d9 4c1 9f3 are the beginning characters of the image ids on my host.</p>
+<p>You could get all your docker system information by using <code>docker system info</code>.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../git/" class="btn btn-neutral float-right" title="Lab 2 - Revision Control with Git">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../tests/" class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../tests/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../git/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

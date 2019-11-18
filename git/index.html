@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Lab 2 - Revision Control with Git - CI/CD Lab Guide</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Lab 2 - Revision Control with Git";
+    var mkdocs_page_input_path = "git.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> CI/CD Lab Guide</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerintro/">Lab 1 - Docker for CI/CD</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Lab 2 - Revision Control with Git</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#revision-control-with-git">Revision Control with Git</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#configuring-git-client">Configuring git client</a></li>
+        
+            <li><a class="toctree-l3" href="#creating-a-sample-application">Creating a sample application</a></li>
+        
+            <li><a class="toctree-l3" href="#basics-of-revision-control">Basics of revision control</a></li>
+        
+            <li><a class="toctree-l3" href="#using-docker-in-development">Using docker in development</a></li>
+        
+            <li><a class="toctree-l3" href="#getting-started-with-branching-and-merging">Getting started with Branching and Merging</a></li>
+        
+            <li><a class="toctree-l3" href="#working-with-remotes">Working with Remotes</a></li>
+        
+            <li><a class="toctree-l3" href="#resolving-conflicts">Resolving conflicts</a></li>
+        
+            <li><a class="toctree-l3" href="#learning-to-undo">Learning to Undo</a></li>
+        
+            <li><a class="toctree-l3" href="#exercise-working-with-github">Exercise:  Working with github</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkins/">Lab 3 - Setting up CI Pipeline with Jenkins</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../jenkinsfile/">Lab 4 - Dev Workflow & Pipeline as a Code with Jenkinsfile</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerjenkins/">Lab 5 - Using Docker to Simplify Jenkins Pipeline</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../dockerfile/">Lab 6 - Packaging Applications with Docker</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../devdeploycompose/">Lab 7 - Deploy to Dev with Compose</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../tests/">Lab 8 - Adding Automated Testing</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">CI/CD Lab Guide</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Lab 2 - Revision Control with Git</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="revision-control-with-git">Revision Control with Git</h1>
+<p>In this lab, you will learn</p>
+<ul>
+<li>How to configure a git client,</li>
+<li>create and work with repositories</li>
+<li>basics of revision control operations</li>
+<li>branching and merging</li>
+<li>working with remotes  </li>
+<li>resolving conflicts   ( and also )</li>
+<li>leveraging docker for local development</li>
+</ul>
+<h2 id="configuring-git-client">Configuring git client</h2>
+<p>Before you are start revision control, you need to configure git.There are three different places you can configure git, that are explained here.</p>
+<p>Git configs</p>
+<table>
+<thead>
+<tr>
+<th align="left">Type</th>
+<th align="left">Scope</th>
+<th align="left">Config Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">LOCAL</td>
+<td align="left">Repo</td>
+<td align="left">.git/config</td>
+</tr>
+<tr>
+<td align="left">GLOBAL</td>
+<td align="left">User</td>
+<td align="left">/home/user/.gitconfig</td>
+</tr>
+<tr>
+<td align="left">SYSTEM</td>
+<td align="left">System</td>
+<td align="left">/etc/gitconfig</td>
+</tr>
+</tbody>
+</table>
+<p>You would create configurations with user scope, valid for all repositories the current user creates.</p>
+<pre><code> git config --global user.name &quot;username&quot;
+ git config --global user.email &quot;user@gmail.com&quot;
+ git config -l
+ cat ~/.gitconfig
+</code></pre>
+
+<p>You could also create additional configurations e.g. editor</p>
+<pre><code> git config --global core.editor vim
+ git config -l
+ git config -e --global
+</code></pre>
+
+<h2 id="creating-a-sample-application">Creating a sample application</h2>
+<p>Here you will create a simple <em>hello-world</em> application using java based spring boot framework.To create the application visit <a href="https://start.spring.io/">startspringboot</a>.</p>
+<p>Once you visit this page, change your artifact name and description. <a href="../images/nextcloud1.png">Click Generate!</a> to download your application.
+<img alt="" src="../images/springboot.png" /></p>
+<p>After downloading the  application code, move that zip file to your local working directory and unzip that application. you will use this application for revision control operations and writing simple web application.  </p>
+<pre><code>unzip hellocd.zip
+</code></pre>
+
+<h2 id="basics-of-revision-control">Basics of revision control</h2>
+<p>Now that you have  a hellocd application created and downloaded, you could   use that to learn  revision control operations.</p>
+<p>You could begin by initializing the repo</p>
+<pre><code> cd hellocd
+ git init .
+ git status
+</code></pre>
+
+<p>Once you check git status it will show all the current files as untracked. You need to add these files so that git starts tacking it. You could use the following commands to start tracking the files in hellocd project with git.</p>
+<pre><code> git add pom.xml
+ git commit
+ git status
+ git add src
+ git add *
+ git commit mvnw
+ git commit -am &quot;adding files created with spring boot generator&quot;
+ git log
+</code></pre>
+
+<h3 id="three-trees-of-git">Three trees of Git</h3>
+<p>Previously you  added and committed all files using git commands. Lets learn what happened when you did that by understanding the three trees of git.</p>
+<ul>
+<li>You began by tracking the files in working directory</li>
+<li>then added those to the staging area and</li>
+<li>then started tracking with git by  adding those to  commit tree.</li>
+</ul>
+<p>Following image should explain this process</p>
+<p><img alt="" src="../images/gittree.png" /></p>
+<p>git logs will shows you commit history and git status show you new file or untracked file in your directory. you just add one more file in your working directory <code>README.md</code>and then check your git status after that commit that using reset.</p>
+<pre><code> git add README.md
+ git status
+ git reset README.md
+ git add README.md
+ git commit -am &quot;adding README&quot;
+</code></pre>
+
+<p>In this you have added and commited the files one by one, that flow chat is given following and this is the current state of your repository.</p>
+<p><img alt="" src="../images/workflow.png" /></p>
+<h2 id="using-docker-in-development">Using docker in development</h2>
+<p>After creating a java project based on maven, you may wish to build it. Beginning with  compilation followed by testing, it could then be deployed into an environment.  To do this, you would need a build environment. Instead of setting up and then managing a build environment with maven, java etc. you could leverage docker's important feature here, disposability.   </p>
+<p>Use the following command to run the container.</p>
+<p>Note: Before you run this command, you need to find out the absolute path for the directory where you are running this from (e.g. hellocd). You could dind it by running <code>pwd</code> command.</p>
+<pre><code>docker container run --rm -it -v /absolute/path/to/ci-cd/hellocd:/app maven:alpine sh
+</code></pre>
+
+<p>Running  above command, should get you a,</p>
+<ul>
+<li>disposable container environment with docker</li>
+<li>created with image maven:alpine</li>
+<li>that should have the build tools including maven, java etc.</li>
+<li>and exiting this container would delete it as we are using --rm options</li>
+</ul>
+<p>while inside the container, you could attempt to build the project as,</p>
+<pre><code> mvn spring-boot:run -f app/pom.xml
+</code></pre>
+
+<p><img alt="" src="../images/mvnspring.png" /></p>
+<p>And run it with,</p>
+<pre><code>mvn spring-boot:run -f app/pom.xml
+</code></pre>
+
+<p><img alt="" src="../images/mvnspring2.png" /></p>
+<p>You could see your libraries are stored in <code>/root/.m2/</code> directory. you can reduce the time to download libraries by creating a volume which can then be mounted at this path.</p>
+<pre><code> docker volume create m2
+
+ docker container run --rm -it -v m2:/root/.m2 -v /Users/gouravshah/learn/ci-cd/hellocd:app maven:alpine mvn spring-boot:run -f /app/pom.xml
+</code></pre>
+
+<p>When you  run <code>docker container run</code> again, you should notice the build being faster due to maven packaes being cached with the newly mounted  volume.</p>
+<h2 id="getting-started-with-branching-and-merging">Getting started with Branching and Merging</h2>
+<p>You could create branch using <code>git branch</code> command and switch it to that branch using <code>git checkout</code>.  Default branch is master, whenever you need to work on other branch, you could use <code>git checkout</code>.</p>
+<pre><code> git branch --list
+ git log
+ git branch webapp
+ git branch --list
+ git branch checkout webapp
+</code></pre>
+
+<p>Instead of using a two step process, You could  create a branch and  switch to it with,</p>
+<pre><code>git checkout -b webapp
+</code></pre>
+
+<p>You can delete your branch using <code>git branch -d</code>. Before deleteing the branch you should switch to another.</p>
+<pre><code>git checkout master
+git branch -d webapp
+</code></pre>
+
+<h3 id="adding-a-new-feature-by-branching-out">Adding a new feature by branching out</h3>
+<p>Now you are going to add a new  features to your application,</p>
+<ul>
+<li>source code changes visit <a href="https://github.com/lfs261/devops-repo">lfs261devops-repo</a> and goto <code>hellocd</code> directory copy <code>HellocdApplication.java.v1</code> code and replace the <code>HellocdApplication.java</code> in your <code>src/main/java/com/example/hellocd directory</code>.</li>
+<li>copy <code>pom.xml.snippet1</code> from  above   url and add it to  <code>pom.xml</code> file under dependency section.</li>
+</ul>
+<p>Now you can check your git status, the result will be those files you have  changed  are in untracked. You can check changes by using <code>git diff</code> and you could commit after <code>git add</code> else directly commit by using <code>git commit -a</code> with the editor.</p>
+<pre><code> git add pom.xml
+ git commit -a
+ git status
+</code></pre>
+
+<p>Now you can see the changes are in new branch, Master still  does not ave any of those incorporated yet.  This is the safer way of bringing your code to master. With the next sub section, you would learn how to bring these changes in to the master.</p>
+<h3 id="merging-with-commit-history">Merging with commit history</h3>
+<p>Previously you have made some changes and committed to a  new branch <em>webapp</em>.  Its now time to test the application.</p>
+<p>Again run the same spring-boot container command with port mapped to <code>8080</code> on host</p>
+<pre><code>docker container run --rm -it -v m2:/root/.m2 -v /Users/gouravshah/learn/ci-cd/hellocd:app -p 8080:8080 maven:alpine mvn spring-boot:run -f /app/pom.xml
+</code></pre>
+
+<p>Once the container is running you can visit the application on <code>http://IPADDRESS:8080</code>, but you will get some error due to some snippet missing on <code>HellocdApplication.java</code>. To fix this issue you could  copy <code>HellocdApplication.java.v2</code> from the devops-repo and replace entirely.</p>
+<p>After replacing the snippet run the following commands to commit.</p>
+<pre><code> git diff
+ git commit -am &quot;added missing annotations&quot;
+</code></pre>
+
+<p>Again run your spring-boot container and visit <code>localhost:8080</code>. You should now see hello world on your browser.</p>
+<p>You could change to <code>hello Continuous Delivery</code> instead of <code>hello world</code> in <code>HellocdApplication.java</code> and commit that, again run your container. Now you can see <code>hello Continuous Delivery</code> in the browser.</p>
+<p><img alt="" src="../images/merging.png" /></p>
+<p>Now that the  feature is added, its time to incorporate these changes in to master by using <code>git merge</code>. Before you do so,  make sure you switch to the  master branch first.</p>
+<pre><code> git checkout master
+ git merge webapp
+ git log
+</code></pre>
+
+<p>If you don't want to continue new feature branch then delete that by using <code>git branch -d</code> and total branch workflow is given following for your reference.</p>
+<pre><code> git branch -d webapp
+</code></pre>
+
+<p><img alt="" src="../images/merge1.png" /></p>
+<h2 id="working-with-remotes">Working with Remotes</h2>
+<p>You could collaborate and works with different branches, users or central repository by using remotes.Here your central repository is github, actually you work with is as the remote and clone from github or create the code, initialize and push the code into the github repository.
+<img alt="" src="../images/remote.png" />
+Before start you need to create account in github, visit the <a href="https://github.com/">github</a> link to create your account.
+while create account use free account option.</p>
+<p>Once you create an account, create a new hellocd public repository. You have two ways to work with repository, first is like you could use initialized repository or second one is clone the repository form github and make changes and push to your repository.</p>
+<p>Here you are already initialized a repository, now you need to add newly created repository as a origin by using following command and push your application to that origin master,</p>
+<pre><code> git remote add origin https://github.com/initcron/hellocd.git
+ git remote show
+ git remote show origin
+ git push origin master
+</code></pre>
+
+<p><img alt="" src="../images/remote1.png" />
+Once you push to origin master, you can see your code in the repository with commit what you have changed.</p>
+<h2 id="resolving-conflicts">Resolving conflicts</h2>
+<p>Just like in real life, when you are collaborating with others, conflicts may happen. Git provide you various options to resolve those.</p>
+<p>Add <code>sever.port=80</code> in <code>src/main/resource/application.properties</code> while you are on the  master branch, commit and push.</p>
+<pre><code> git diff
+ git commit -am &quot;added server port 80&quot;
+ git push origin master
+</code></pre>
+
+<h3 id="creating-a-conflict">Creating a Conflict</h3>
+<p>To resolve a conflict, first we would have to create one, to the least simulate it. TO do that, you would be creating two branches, and updating the same file with different content from those. Following sequence of commands would help you do that.</p>
+<p>You have an option to work in pairs here. The commands are differenciated with <em>user1</em> and <em>user2</em>. Make sure you are working with the same repository in case of a pair. If you can not come up with a pair, go ahead and run both blocks of commands from the same workspace.</p>
+<p>user1: use the following code</p>
+<pre><code> git checkout -b user1
+
+ ```
+ set value of  server.port to 8080 in `src/main/resource/application.properties`
+
+ ```
+ git diff
+ git commit -am &quot;this should run on port 8080&quot;
+ git push origin user1
+</code></pre>
+
+<p>user2: use the following</p>
+<pre><code> git checkout -b user2
+
+</code></pre>
+
+<p>set value of  server.port to 8081 in <code>src/main/resource/application.properties</code></p>
+<pre><code> git diff
+ git commit -am &quot;this should run on port 8081&quot;
+ git push origin user2
+</code></pre>
+
+<p>Once you do the above,  switch to the  master branch and try to merge the branches you just updated, simultaneously.</p>
+<p>user1:</p>
+<pre><code> git checkout master
+ git pull origin user2
+ git log
+ git push origin master
+</code></pre>
+
+<p>user2:</p>
+<pre><code>git checkout master
+git pull origin user1
+git log
+git push origin master
+</code></pre>
+
+<p>You should get a conflict here.  Use <code>git log</code> to  check the details.</p>
+<h3 id="manually-resolving-a-conflict">Manually resolving a Conflict</h3>
+<p>You could resolve a conflict manually by editing the file in conflict. In this example,  You could pick one value for  <code>server.port</code> and keep that line in the file. Remove everything else including the lines staring with &lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; and &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;. Once you do so, add it back and merge as,</p>
+<pre><code> git add src/main/resource/application.properties
+ git commit -a
+ git push origin master
+</code></pre>
+
+<p>Validate by examining the  commit history.</p>
+<pre><code>git log
+</code></pre>
+
+<p><img alt="" src="../images/resolve.png" /></p>
+<p>Once you complete this, delete your user1 &amp; user2 branches by using following commands,</p>
+<pre><code> git branch -d user1
+ git branch -d user2
+ git push origin --delete user1
+ git push origin --delete user2
+</code></pre>
+
+<h2 id="learning-to-undo">Learning to Undo</h2>
+<p>Its common to add changes to the commit history and later wish you could have taken those back. At times, there are silly mistakes, or bugs you detect in your feature branches, that do not need to reflect in the commit history. There are often times, when you may wish to unstage s file.  Git offers reset  command with its options to achieve this.</p>
+<p>Lets add a change that we would undo later.</p>
+<pre><code> git checkout -b config
+ git branch
+</code></pre>
+
+<p>Update  <code>src/main/resource/application.properties</code> with  <code>server.port=9000</code></p>
+<pre><code> git status
+ git add src/main/resource/application.properties
+ git status
+</code></pre>
+
+<p>The file is now been staged. To unstage the same,</p>
+<pre><code> git reset src/main/resource/application.properties
+ git status
+</code></pre>
+
+<pre><code> git diff
+ git commit -am &quot;changed port to 9000&quot;
+ git log
+ git push origin config
+</code></pre>
+
+<p>You have not only added it to a commit history but also   pushed the change to the remote.
+You just realised that port configured <code>9000</code> should just be  <code>8080</code>.  Now you are wondering how to bring that change back.</p>
+<p>Git reset can come in handy here as well, however, this time since its been added to commit history, you would have to use a special option to undo this time.</p>
+<p>Try using the following command,</p>
+<pre><code> git reset HEAD~1
+
+</code></pre>
+
+<ul>
+<li>This should revert the last commit and point the HEAD (tip of the git repo) to the previous commit</li>
+<li>You could use HEAD~2, HEAD~3 to shift the  HEAD back by  two/three commits respectively</li>
+<li>You could optionally use the commit id to shift HEAD to a specific commit   </li>
+</ul>
+<p>What you did above was a soft reset. Meaning, the undo was done for the commit history only. You would still see the files  in the staging area, and current working tree being unchanged.
+You could undo it all the way ( this is a destructive process) by doing a  hard reset as,</p>
+<pre><code>git reset --hard HEAD~1
+</code></pre>
+
+<p>Once you reset,if you try to push with the changes to remote,  it should give you a error. To undo changes to remote, use force option.</p>
+<pre><code>git push origin config -f
+</code></pre>
+
+<h3 id="revert-vs-reset">Revert vs Reset</h3>
+<p>Reset is useful while working on feature/personal  branches. However, when you have a collaborative workflow, with common branches such as trunk/mainline/master, resetting changes on common branches  could leave everyone else confused and in inconsistent state.   THis is because reset wipes out the commits to undo changes. A cleaner solution in such  cases is using <code>git revert</code> instead, which undoes the changes, however by adding a new commit, which is then part of the commit history, leaving everyone in sync.   </p>
+<p>To learn  how revert works, lets first update a file and commit it.</p>
+<p>You could config2 branch and  file and commit the changes in feature branch, bring those changes to master branch using following commands,</p>
+<pre><code> git checkout -b config2
+
+</code></pre>
+
+<p>Update <code>src/main/resource/application.properties</code> with   <code>service.port=7000</code></p>
+<pre><code> git diff
+ git commit -am &quot;run on port 7000&quot;
+ git push origin config2
+ git checkout master
+ git pull origin config2
+ git push origin master
+</code></pre>
+
+<p>Now that you have incorporated these changes to the master branch, its time to revert.</p>
+<pre><code> git log
+ git revert HEAD
+      (or)
+ git revert 5080dcc9d13ac920b5867891166a
+</code></pre>
+
+<p>where, 5080dcc9d13ac920b5867891166a is the previous commit id that you would want to revert.</p>
+<p>Once you revert, you need sync changes in master branch with remote by using following command.</p>
+<pre><code> git log
+ git push origin master
+</code></pre>
+
+<p>Once sync the changes, it will show the changes to your co-developer and delete your config2 branch after git revert.</p>
+<p>Go ahead and delete the branch after you are done with, </p>
+<pre><code> git branch delete config2
+ git push origin :config2
+</code></pre>
+
+<h2 id="exercise-working-with-github">Exercise:  Working with github</h2>
+<p>You have been tasked to create a Let you create new repository <code>skills journal</code>,add a description and init with README file with the license for your public repository.</p>
+<p>Once you create repository , clone the repository locally by using following command and add your skills in a file, push to your origin.</p>
+<pre><code> git clone https://github.com/mohaninit/skills-journal.git
+ git add skills.md
+ git commit -am &quot;added skills&quot;
+ git remote show
+ git remote show origin
+ git push origin master
+</code></pre>
+
+<p>You could create more files, commit it and push it in your repository.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../jenkins/" class="btn btn-neutral float-right" title="Lab 3 - Setting up CI Pipeline with Jenkins">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../dockerintro/" class="btn btn-neutral" title="Lab 1 - Docker for CI/CD"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../dockerintro/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../jenkins/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>
