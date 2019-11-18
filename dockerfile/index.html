@@ -173,52 +173,64 @@
 <ul>
 <li>Clone Repository for Java worker app</li>
 </ul>
-<p><code>git clone https://github.com/schoolofdevops/example-voting-app.git</code></p>
+<pre><code>  git clone https://github.com/schoolofdevops/example-voting-app.git
+</code></pre>
+
 <ul>
 <li>Launch an intermediate container to install worker app</li>
 </ul>
 <p>Create a Container with  <strong>schoolofdevops/voteapp-mvn:v1</strong> image</p>
-<p><code>docker run -idt --name build maven:3.6.1-jdk-8-slim sh</code></p>
+<pre><code>  docker run -idt --name build maven:3.6.1-jdk-8-slim sh
+</code></pre>
+
 <ul>
-<li>
-<p>Copy over the Source Code
-  <code>cd example-voting-app/worker
-  docker container cp .  build:/app</code></p>
-</li>
-<li>
-<p>Connect to container to compile and package the code</p>
-</li>
+<li>Copy over the Source Code</li>
 </ul>
-<p>```
-  docker exec -it build sh</p>
-<p>mvn package</p>
-<p>```</p>
+<pre><code>  cd example-voting-app/worker
+  docker container cp .  build:/app
+</code></pre>
+
+<ul>
+<li>Connect to container to compile and package the code</li>
+</ul>
+<pre><code>  docker exec -it build sh
+
+  mvn package
+
+</code></pre>
+
 <ul>
 <li>Verify jarfile has been built</li>
 </ul>
-<p>```
-  ls target/</p>
-<p>java -jar target/worker-jar-with-dependencies.jar
-  ```</p>
-<p>[sample output]
-  <code>/app # java -jar target/worker-jar-with-dependencies.jar
+<pre><code>  ls target/
+
+  java -jar target/worker-jar-with-dependencies.jar
+</code></pre>
+
+<p>[sample output]</p>
+<pre><code>  /app # java -jar target/worker-jar-with-dependencies.jar
   Waiting for redis
   Waiting for redis
   Waiting for redis
   Waiting for redis
   Waiting for redis
   Waiting for redis
-  ^c</code>
-  [use ^c to exit]</p>
+  ^c
+</code></pre>
+
+<p>[use ^c to exit]</p>
 <p>The above is the expected output. The <strong>worker</strong> app keeps waiting for <strong>redis</strong> and then later <strong>db</strong> in a loop.</p>
 <ul>
-<li>Move the artifact, remove source code
-  ```</li>
+<li>Move the artifact, remove source code</li>
 </ul>
-<p>mv target/worker-jar-with-dependencies.jar /run/worker.jar</p>
-<p>rm -rf /app/*</p>
-<p>exit
-  ```</p>
+<pre><code>
+  mv target/worker-jar-with-dependencies.jar /run/worker.jar
+
+  rm -rf /app/*
+
+  exit
+</code></pre>
+
 <ul>
 <li>
 <p>Commit  container to an image</p>
@@ -229,26 +241,37 @@
 </li>
 </ul>
 <p>Commit the container into a image  as,</p>
-<p>```</p>
-<p>docker container commit build  <docker hub user id >/worker:v1</p>
-<p>```</p>
+<pre><code>
+  docker container commit build  &lt;docker hub user id &gt;/worker:v1
+
+</code></pre>
+
 <p>Test before pushing  by launching container with the packaged app</p>
-<p><code>docker run --rm -it  &lt;docker hub user id &gt;/worker:v1 java -jar /run/worker.jar</code></p>
+<pre><code>    docker run --rm -it  &lt;docker hub user id &gt;/worker:v1 java -jar /run/worker.jar
+</code></pre>
+
 <ul>
 <li>Push Image to registry</li>
 </ul>
 <p>Before you push the image, you need to be logged in to the registry, with the docker hub id created earlier. Login using the following command,</p>
-<p><code>docker login</code></p>
+<pre><code>  docker login
+</code></pre>
+
 <p>To push the image, first list it,</p>
-<p><code>docker image ls</code></p>
+<pre><code>  docker image ls
+</code></pre>
+
 <p>[Sample Output]</p>
-<p>```
-  REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
+<pre><code>  REPOSITORY                   TAG                 IMAGE ID            CREATED             SIZE
   initcron/worker         v2              90cbeb6539df        18 minutes ago      194MB
-  initcron/worker         v1              c0199f782489        34 minutes ago      189MB</p>
-<p>```</p>
+  initcron/worker         v1              c0199f782489        34 minutes ago      189MB
+
+</code></pre>
+
 <p>To push the image,</p>
-<p><code>docker push &lt;dockrhub user id&gt;/worker:v1</code></p>
+<pre><code>  docker push &lt;dockrhub user id&gt;/worker:v1
+</code></pre>
+
 <h2 id="lab-building-images-with-dockerfile">Lab: Building Images with Dockerfile</h2>
 <p>Now, lets build the same image, this time with Dockerfile. To do this, create a file by name <strong>Dockerfile</strong> in the root of the source code.</p>
 <p><code>file: example-voting-app/worker/Dockerfile</code></p>
