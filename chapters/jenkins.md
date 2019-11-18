@@ -17,7 +17,7 @@ Here you are going learn, how to setup jenkins using docker. prerequisite for th
 You could run a jenkins container on your docker host by using official jenkins image with the version `2.178-Slim`. Use following command to launch the jenkins container,
 
 ```
-docker container run -idt --name jenkins -P -p 8080:8080 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:2.178-slim
+docker container run -idt --name jenkins -P -p 8080:8080 -v jenkins_home:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkins/jenkins:2.204-slim
 ```
 
 ![](./images/jenkins1.png)
