@@ -127,14 +127,22 @@
               
                 <h3 id="writing-jenkinsfile-for-a-nodejs-app-">Writing jenkinsfile for a NodeJS app :-</h3>
 <p>Here you will verify your declarative pipeline for result and if you have any doubts to create Jenkinsfile for result, follow the below steps to complete the pipeline.</p>
-<p>Steps :-
-Create a branch <code>feature/resultpipe</code> using git checkout command.</p>
+<h4 id="steps">Steps</h4>
+<ul>
+<li>Create a branch <code>feature/resultpipe</code> using git checkout command.</li>
+</ul>
 <pre><code>git checkout -b feature/resultpipe
 </code></pre>
 
-<p>Create a Jenkinsfile inside result directory or copy the previous Jenkinsfile file from worker to result.
-In Jenkinsfile, add nodejs tools with exact version that configured in <code>manage jenkins -&gt; global tool configuration -&gt; Nodejs</code>.
-Refer your Jenkinsfile by using below code.</p>
+<ul>
+<li>
+<p>Create a Jenkinsfile inside result directory or copy the previous Jenkinsfile file from worker to result.</p>
+</li>
+<li>
+<p>In Jenkinsfile, add nodejs tools with exact version that configured in <code>manage jenkins -&gt; global tool configuration -&gt; Nodejs</code>.</p>
+</li>
+</ul>
+<p><code>file: result/Jenkinsfile</code></p>
 <pre><code>pipeline {
   agent any
 
@@ -174,35 +182,35 @@ Refer your Jenkinsfile by using below code.</p>
     always{
         echo 'Building multibranch pipeline for worker is completed..'
     }
-    failiure{
-      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
-    }
-    success{
-      slackSend (channel: &quot;instavote-cd&quot;, message: &quot;Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (&lt;${env.BUILD_URL}|Open&gt;)&quot;)
-    }
   }
 }
 </code></pre>
 
-<p>Now you have a Jenkisfile which install &amp; test npm and it will send slack notification as well.
-commit the changes into <code>feature/resultpipe</code> branch by using below commands and it will automatically</p>
+<p>commit the changes into <code>feature/resultpipe</code> branch by using below commands and it will automatically</p>
 <pre><code> git status
  git add feature/resultpipe
  git commit -am &quot;adding Jenkinsfile for result app&quot;
  git push origin feature/resultpipe
 </code></pre>
 
-<p>In your jenkins, create new multibranch pipeline as <code>result-pipe</code> and copy form <code>worker-pipe</code>.
-goto your <code>result-pipe</code> configuration page add description as <code>instavote result multi branch pipeline</code> and under build configuration change the script path as <code>result/Jenkinsfile</code> and save the configiuration, it will start scaning your repository and start your build as well.
-goto <code>result/test/mock.test.js</code> file, add the one more more mocktest form exiting mocktest. commit the changes to <code>feature/resultpipe</code> branch using  below commands.</p>
+<ul>
+<li>
+<p>In your jenkins, create new multibranch pipeline as <code>result-pipe</code> and copy form <code>worker-pipe</code>.</p>
+</li>
+<li>
+<p>go to your <code>result-pipe</code> configuration page add description as <code>instavote result multi branch pipeline</code> and under build configuration change the script path as <code>result/Jenkinsfile</code> and save the configiuration, it will start scaning your repository and start your build as well.</p>
+</li>
+<li>
+<p>go to <code>result/test/mock.test.js</code> file, add the one more more mocktest form exiting mocktest. commit the changes to <code>feature/resultpipe</code> branch using  below commands.</p>
+</li>
+</ul>
 <pre><code>git status
 git add feature/resultpipe
 git commit -am &quot;adding mock test&quot;
 git push origin feature/resultpipe
 </code></pre>
 
-<p>Once you make commit change into the branch, it will automatically build the pipeline and gives the result. Now create a pull request from main github account and review from another account and merge with master branch. Once you merge with master branch, jenkins will run pipeline job for master branch and you could check slack notification as well. Disable our previous jobs workerbuild, resultbuild.</p>
-<p>Now you have learned how to write a Jenkinsfile for nodejs application.</p>
+<p>Once you  commit changes into the branch, it will automatically build the pipeline and gives the result. Now create a pull request from main github account and have it reviewed,  merge with master branch. Once merged, jenkins will run pipeline job for master branch  as well.</p>
               
             </div>
           </div>
