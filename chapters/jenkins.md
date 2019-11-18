@@ -34,7 +34,7 @@ docker logs jenkins
 and paste it on the Jenkins UI to unlock.
 
 
-In the next step , choose install suggested plugins to configure the default plugins automatically.
+In the next step , choose **install suggested plugins** to configure the default plugins automatically.
 
 Once plugins are  installed, you will  create the  admin user using the form presented.
 ![](./images/jenkins3.png)
@@ -86,7 +86,7 @@ You could follow the following steps to configure maven build job.
 
 **Steps:**
 
-  * Goto `manage jenkins -> global tools configuration` and under maven section, provide name as `maven 3.6.1` and select the maven version `3.6.1`, save those changes.
+  * Goto `manage jenkins -> global tools configuration` and under maven section, provide name as `Maven 3.6.2` and select the maven version `3.6.1`, save those changes.
 ![](./images/jenkins8.png)
 
 

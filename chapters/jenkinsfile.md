@@ -230,7 +230,7 @@ Now you are going to write Jenkinsfile for worker application using previous sam
 
 **Steps:**
 
-Create a Jenkisfile inside `worker` dir of your code. Before you start writing the code, check your maven version in your jenkins `Manage Jenkins --> Global Tools Configurations -> Maven`  and note down the exact name you are referring to the configuration (e.g. Maven 3.6.1).
+Create a Jenkisfile inside `worker` dir of your code. Before you start writing the code, check your maven version in your jenkins `Manage Jenkins --> Global Tools Configurations -> Maven`  and note down the exact name you are referring to the configuration (e.g. Maven 3.6.2).
 
 
 `file: worker/Jenkinsfile`
@@ -240,7 +240,7 @@ pipeline {
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -311,7 +311,7 @@ pipeline {
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -370,7 +370,7 @@ pipeline {
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -445,7 +445,7 @@ pipeline {
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
@@ -566,7 +566,7 @@ pipeline {
   agent any
 
   tools{
-    maven 'maven 3.6.1'
+    maven 'Maven 3.6.2'
 
   }
 
