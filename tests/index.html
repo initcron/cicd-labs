@@ -101,11 +101,9 @@
         
             <li><a class="toctree-l3" href="#adding-static-code-analysis-with-sonarqube">Adding Static Code Analysis with Sonarqube</a></li>
         
-            <li><a class="toctree-l3" href="#adding-sonarqube-scanner-stage-to-jenkinsfile-optional">Adding Sonarqube Scanner  Stage to  Jenkinsfile [optional]</a></li>
-        
             <li><a class="toctree-l3" href="#adding-integration-tests">Adding Integration Tests</a></li>
         
-            <li><a class="toctree-l3" href="#adding-acceptancee2e-tests">Adding Acceptance/e2e Tests</a></li>
+            <li><a class="toctree-l3" href="#adding-e2e-tests">Adding e2e tests</a></li>
         
         </ul>
     
@@ -146,36 +144,25 @@
             <div class="section">
               
                 <h1 id="continuous-testing">Continuous Testing</h1>
-<p>This lab is dedicated to adding automated tests,  and here are your learning objectives,</p>
+<p>This section is dedicated to automated testing and here are your learning objectives,</p>
 <ul>
 <li>You are going to begin by analysing code coverage with Jococo</li>
 <li>Learn how to improve the code coverage</li>
-<li>Setup Sonarqube to automatically scan your repository</li>
+<li>Setup sonarqube to automatically scan your repository</li>
 <li>Create a  project gating system  to automatically decide whether the code is safe to deploy</li>
 <li>Add integration and acceptance tests  with docker compose
    and finally,  incorporate all of these into the Jenkins pipeline</li>
 </ul>
-<h2 id="code-coverage-with-jacoco">Code coverage with Jacoco</h2>
-<p>Create a new Jenkins project which would download the following sample repository and run unit tests with a Jacoco plugin for java and display code coverage reports as follows</p>
-<p><strong>Steps:</strong></p>
+<h3 id="code-coverage-with-jacoco">Code coverage with Jacoco</h3>
+<p>STEPS:</p>
 <ul>
-<li>Fork this repo:  https://github.com/lfs261/maven-examples to your GitHub account/org.</li>
-<li>Install Jacoco Plugin for Jenkins
-[image:D6AFDCFD-A9C4-484C-8CFE-B803CCBFDF9B-298-00000F836696EA06/Screenshot 2019-08-06 at 4.57.54 PM.png]</li>
-<li>Create  a maven project, provide the repo you forked as source,  add maven goals to run tests  on it. Use <em>clean test</em> as the maven goal.
-[image:73C69759-708B-495E-8591-E24BC55C8BF6-298-00000F6F157D2B62/Screenshot 2019-08-06 at 4.56.26 PM.png]</li>
-<li>
-<p>From post build actions, choose <strong>Record Jacoco Coverage Reports</strong>[image:0A81C0B4-81E2-441C-B5E7-60C933658478-298-00000FAEB3B0828A/Screenshot 2019-08-06 at 5.00.58 PM.png]</p>
-</li>
-<li>
-<p>Keep all the configurations as default and save the project.</p>
-</li>
+<li>Fork this repo:  https://github.com/lfs261/maven-examples</li>
+<li>Add a maven job to run  test on it</li>
+<li>From post build action, publish Jacoco reports</li>
+<li>Merge ut1, and ut2 branches into master and run the jobs again</li>
 </ul>
-<p>[image:1FE4D7AB-0DBD-4317-8524-D31E96F3AA72-298-00000F97C2AEFE60/Screenshot 2019-08-06 at 4.59.21 PM.png]
-  * After  you build the project, you should start setting the code coverage reports being posted on the project page.
-[image:8E611087-9D3A-4992-AF11-B5493338B119-298-00000FC05B444F49/Screenshot 2019-08-06 at 5.02.14 PM.png]</p>
-<h2 id="adding-static-code-analysis-with-sonarqube">Adding Static Code Analysis with Sonarqube</h2>
-<p><strong>Steps</strong>:</p>
+<h3 id="adding-static-code-analysis-with-sonarqube">Adding Static Code Analysis with Sonarqube</h3>
+<p>Steps:</p>
 <ul>
 <li>Setup sonarqube</li>
 <li>Install sonarqube scanner plugin for Jenkins</li>
@@ -183,101 +170,7 @@
 <li>Add Jenkins system/global tools  configuration for sonarqube</li>
 <li>Add build breaker plugin to sonarqube:  https://github.com/adnovum/sonar-build-breaker/releases/download/v2.3/sonar-build-breaker-plugin-2.3.jar</li>
 </ul>
-<h3 id="launch-sonarqube-server-with-docker-as">Launch sonarqube server with docker as</h3>
-<pre><code>docker container run -idt --name sonarqube -p 9000:9000 sonarqube:7.9-community
-
-docker ps -l
-</code></pre>
-
-<p>You could now access Sonarqube UI using <code>http://IPADDRESS:9000</code> which would look similar to follows.
-[image:563A0E6F-A877-4387-AA42-98DCFC096D7C-298-000008DCBEAE7E32/Screenshot 2019-08-05 at 10.37.00 PM.png]</p>
-<p>You could then explore various tabs on the Sonarqube UI.</p>
-<h3 id="integrate-sonarqube-with-jenkins">Integrate Sonarqube with Jenkins</h3>
-<ul>
-<li>Install <em>Sonarqube Scanner</em> plugin for Jenkins , without a restart.</li>
-</ul>
-<p>[image:65D430C0-9EA0-4848-A8ED-DA6F50C8A0FC-298-000008CCF83CB009/Screenshot 2019-08-05 at 10.35.53 PM.png]</p>
-<ul>
-<li>Login to Sonarqube UI with the following default credentials</li>
-<li>username: admin</li>
-<li>password admin</li>
-</ul>
-<p>[image:2D6727DF-51D3-459C-B03B-95EA16D402A2-298-000008ED0F3EA37D/Screenshot 2019-08-05 at 10.38.12 PM.png]</p>
-<ul>
-<li>Once logged in, From Administration -&gt; Security -&gt; User select <em>Tokens</em> option for Administration user, and click on that.  </li>
-</ul>
-<p>[image:41233ACC-5F69-468D-AB75-B35494FB2303-298-000009291E464999/sonar1.png]</p>
-<ul>
-<li>Generate a token, provide it with a name, and copy over this token, which is displayer only once.</li>
-</ul>
-<p>[image:A5231F9B-7774-4D3F-88CB-25185A99E635-298-0000094ADB32FCA7/Screenshot 2019-08-05 22.44.48.png]</p>
-<ul>
-<li>On Jenkins,  go to Jenkins -&gt; System Configurations -&gt; SonarQube Servers
-[image:78DAE3B7-DFEA-4E98-A9F4-8B2C3AE00915-298-0000098525565581/Screenshot 2019-08-05 at 10.48.56 PM.png]</li>
-</ul>
-<p>Provide the configuration as shown above.
-     * Check the box to enable injection of configs
-     * Provide a name to this instance . Keep it as <em>sonar</em> as it would be referred to  later.
-     * Sonarqube URL
-     *  Add server authentication token to Jenkins as <em>secret text</em> and select it from the dropdown. Save the configuration</p>
-<ul>
-<li>From Jenkins -&gt; Global Tools Configurations -&gt; Sonarqube  provide configurations as following
-[image:D07CA950-3B89-4FC3-BB3C-74620CA8E687-298-000009B096332469/Screenshot 2019-08-05 at 10.52.09 PM.png]
-While defining the name, keep it as <em>SonarScanner</em> which  would be referred to  later when you write the pipeline code.</li>
-</ul>
-<h3 id="scanning-code-and-reporting-to-sonarqube">Scanning code and reporting to Sonarqube</h3>
-<p>Go to the job that you created to test Jacoco code , and add one more build step to <strong>Execute Sonarqube Scanner</strong>
-[image:CD809182-815F-4E69-AAE4-B631FD6DD832-298-000009ED09019527/Screenshot 2019-08-05 22.56.23.png]</p>
-<p>You could add  the following snippet as Analysis Properties</p>
-<pre><code># Required metadata
-sonar.projectKey=Jacoco
-sonar.projectName=Jacoco Code Coverage
-sonar.projectVersion=1.0
-# Comma-separated paths to directories with sources (required)
-sonar.sources=code-coverage-jacoco
-# Encoding of the source files
-sonar.sourceEncoding=UTF-8
-  sonar.java.binaries=.
-sonar.jacoco.reportPaths=code-coverage-jacoco/target/coverage-reports/jacoco-ut.exec
-
-</code></pre>
-
-<p>Save and  run the project. If the job succeeds,  you should be able to see an output similar to the following diagram on Projects section of Sonarqube.</p>
-<p>[image:8602AC5D-B5FB-489E-8B7B-C9AF8C17B67B-298-00000A01B6E26459/Screenshot 2019-08-05 at 10.57.54 PM.png]</p>
-<h3 id="configuring-project-gating-system">Configuring Project Gating System</h3>
-<p>From Sonarqube -&gt; Quality Gates click on Create.
-[image:0FC0FF20-7410-4B46-B7FA-08053E04C0DA-298-00000A36ADEAAE6B/Screenshot 2019-08-05 at 11.01.44 PM.png]
-Select a criteria  as shown in the image above which includes,
-    * Code Coverage should be higher than 75%
-    * Security Rating should be <strong>A</strong></p>
-<p>Apply it to the project  which is been added to sonarqube by searching and selecting it e.g. the one starting with  Jacoco .</p>
-<p>Run the test job again, and see what happens on Jenkins as well as on Sonarqube.</p>
-<ul>
-<li>Did the Project Gate Pass ?</li>
-<li>Did Jenkins project fail ?</li>
-</ul>
-<h3 id="breaking-jenkins-build">Breaking Jenkins build</h3>
-<p>When the project gate fails on Sonarqube, the build should break on Jenkins as well so that the pipeline execution does not proceed and deploy and faulty code. To achieve this, build breaker plugin needs to be installed on sonarqube.  Follow the steps below to do so,</p>
-<pre><code>docker exec -it sonarqube bash
-cd extensions/plugins
-wget -c https://github.com/adnovum/sonar-build-breaker/releases/download/v2.3/sonar-build-breaker-plugin-2.3.jar
-
-exit
-
-docker restart sonarqube
-</code></pre>
-
-<p>Once Sonarqube is restarted, run the Jenkins job again, this time it should fail.</p>
-<h3 id="improving-code-coverage">Improving  Code Coverage</h3>
-<ul>
-<li>You may have already forked  https://github.com/lfs261/maven-examples and created projects to test it and publish jacoco reports.</li>
-<li>Merge ut1 branches into master and run the test job again</li>
-<li>Merge ut2 branches into master and run the test job again</li>
-</ul>
-<p>Launch  the job which runs sonarqube scanner every time you merge the branch, and observe the behaviour.</p>
-<h2 id="adding-sonarqube-scanner-stage-to-jenkinsfile-optional">Adding Sonarqube Scanner  Stage to  Jenkinsfile [optional]</h2>
-<p>Add the following code snippet to the consolidated Jenkinsfile created earlier while setting up a monopipe.  </p>
-<p><code>file: Jenkinsfile</code></p>
+<h4 id="sonarqube-stage-code-snippet-for-jenkinsfile-options-for-the-classroom-course">Sonarqube stage code snippet for Jenkinsfile [options for the classroom course]</h4>
 <pre><code>stage('Sonarqube') {
     agent any
     when{
@@ -296,17 +189,12 @@ docker restart sonarqube
 
 </code></pre>
 
-<p>Once you run the pipeline after adding this stage, you should be able to browse to <em>Instavote AIO</em> project  now added to Sonarqube.  </p>
-<p>[image:79DA97EE-EFA8-472F-B26E-9C8045874AB1-298-0000105849CF58DB/Screenshot 2019-08-06 at 5.13.09 PM.png]</p>
-<p>You could further configure and apply a project gate for the instate application.</p>
 <h2 id="adding-integration-tests">Adding Integration Tests</h2>
-<p>Integration tests for the vote python app is already added to the vote/ subdirectory of the repository.  To add integration tests to the pipeline, follow the steps below  </p>
-<p><strong>Steps</strong>:</p>
+<p>STEPS:</p>
 <ul>
-<li>Examine  the script at  <em>vote/integration_test.sh</em> in the example-voting-app repository.  Reading the script and the docker compose setup it uses, should give you a good understanding of how integration tests are setup. You could also refer to the video lessons to get a better understanding of it.</li>
-<li>Add a stage to Jenkinsfile  to run the integration tests as follows</li>
+<li>vote/integration_test.sh</li>
+<li>run as part of vote pipeline</li>
 </ul>
-<p><code>file: Jenkinsfile</code></p>
 <pre><code>stage('vote integration'){
     agent any
     when{
@@ -323,10 +211,10 @@ docker restart sonarqube
 
 </code></pre>
 
-<h2 id="adding-acceptancee2e-tests">Adding Acceptance/e2e Tests</h2>
+<h2 id="adding-e2e-tests">Adding e2e tests</h2>
 <ul>
-<li>Examine the script at <em>e2e.sh</em>  in the example-voting-app repository.  Reading the script and the docker compose setup it uses, should give you a good understanding of how acceptance  tests are setup. You could also refer to the video lessons to get a better understanding of it.</li>
-<li>Create a  independent Jenkins Project which clones the <em>example-voting-app</em> repository and launches e2e tests.  This would be later integrated as part of the deployment process.</li>
+<li>./e2e.sh</li>
+<li>run as independent job</li>
 </ul>
               
             </div>
