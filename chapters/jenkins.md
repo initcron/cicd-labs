@@ -86,7 +86,7 @@ You could follow the following steps to configure maven build job.
 
 **Steps:**
 
-  * Goto `manage jenkins -> global tools configuration` and under maven section, provide name as `Maven 3.6.2` and select the maven version `3.6.1`, save those changes.
+  * Goto `manage jenkins -> global tools configuration` and under maven section, provide name as `Maven 3.6.2` and select the maven version `3.6.2`, save those changes.
 ![](./images/jenkins8.png)
 
 

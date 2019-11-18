@@ -1,6 +1,6 @@
 site_name: CI/CD Lab Guide
 pages:
-  - Home: "tests.md"
+  - Home: "index.md"
   - Lab 1 - Docker for CI/CD: "dockerintro.md"
   - Lab 2 - Revision Control with Git: "git.md"
   - Lab 3 - Setting up CI Pipeline with Jenkins: "jenkins.md"

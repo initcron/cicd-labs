@@ -14,8 +14,9 @@ Here is what you are going to learn in this lab,
 ## Enforcing Workflow with Branch Policies
 
 **Reading List**:
-  * [Web: Guide to Trunk Based Development](https://trunkbaseddevelopment.com/)  
-  * [Video: Trunk Based Development Explained](https://youtu.be/ykZbBD-CmP8?t=306)
+
+  * [Web: Guide to Trunk Based Development](https://trunkbaseddevelopment.com/)    
+  * [Video: Trunk Based Development Explained](https://youtu.be/ykZbBD-CmP8?t=306)  
 
 
 Lets create branch policies based on trunk based development workflow. With trunk based development,
@@ -73,9 +74,9 @@ With this sub section, you will learn how to make changes in master branch by us
 
    * Create a branch `readme` using  command following,
 
-   ```
+```
    git checkout -b readme
-   ```
+```
 
    Running this command, git will create and switch to the *readme* branch.
 
@@ -85,21 +86,23 @@ With this sub section, you will learn how to make changes in master branch by us
 
    `filename: README.md`
 
-   ```
+
+```
+
    Example Voting App
    =========
 
    This is a sample voting app.
-   ```
+```
 
 
   * Save and  commit the  changes you have made.
 
-  ```
+```
   git status
   git commit -am "added application info"
   git push origin readme
-  ```
+```
   This pushes the changes to  `readme` branch of the repo on GitHub.
 
   * Now go to the github repository and choose branch `readme`, there you should see `new pull request`. The pull request is to help you to merge those changes from the feature branch to master, to the upstream repo you forked,  or even to a completely differnt fork.
@@ -118,8 +121,9 @@ After approval  you could  merge the pull request to master. You could delete th
 
 
 **Reading List**:
-  * [Declarative Pipeline Syntax](https://jenkins.io/doc/book/pipeline/syntax/)
-  * [Declarative Pipeline Steps](https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#dir-change-current-directory)
+
+  * [Declarative Pipeline Syntax](https://jenkins.io/doc/book/pipeline/syntax/)  
+  * [Declarative Pipeline Steps](https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#dir-change-current-directory)  
 
 
 Following is an example pipeline code. Examine it  to learn how to create a Jenkinsfile and define the jobs as a code.
@@ -144,6 +148,7 @@ goto  `pipeline-01` configuration page, in pipeline step choose `hello-world` sc
 Now you are going to write declarative pipeline, visit [declarative pipeline](https://jenkins.io/doc/book/pipeline/syntax/) for your reference.
 
 Use the following code to configure your pipeline job.
+
 ```
 pipeline {
   agent any
@@ -245,7 +250,7 @@ pipeline {
   }
 
   stages{
-      stage("build){
+      stage("build"){
           steps{
               echo 'Compiling worker app'
               dir('worker'){
@@ -397,6 +402,7 @@ pipeline {
               echo 'Packaging worker app'
               dir('worker'){
                 sh 'mvn package -DskipTests'
+                archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
               }
 
           }
@@ -405,7 +411,6 @@ pipeline {
 
   post{
     always{
-        archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
         echo 'Building multibranch pipeline for worker is completed..'
     }
   }
@@ -521,130 +526,17 @@ git push origin feature/workerpipe -f
 
 Now you have learned how to use conditional pipeline stages.
 
-## Integrating slack with jenkins [optional]
-
-`this is an optional section. Refer to it only if you wish to integrate with slack for notifications`
-
-Here you will learn, how to integrate slack with jenkins and this will helpful to send notifications related to your build from jenkins to slack channel.
-
-Prerequsite for this, you need a slack account and you should be the slack channel administrator.
-
-Follow the following steps to complete this setup.
-
-**Steps:**
-
-  * create slack account and create a channel with the name of `instavote-cd`.
-![](./images/jenkinsfile6.png)
-
-  * After creating the channel, go to `administrator -> manage apps`. It will open a browser window.  search `Jenkins CI` and select configure. From the configuration pagechoose  ` instavote-cd` and add jenkins integration, it will show step by step process to setup jenkins configuration.
-
-  * Go to your jenkins, `manage jenkins -> manage plugins -> available plugins` search `slack notification` plugin and install.
-
-  * Go to `manage jenkins -> configure system`, at the bottom you could find Global slack notifier settings. copy your `team sub domain` from slack configure page which you got in previous step and add in jenkins page.
-
-  * Add integration credential id, that is secret text, add a secret text using integration token credential id given in slack jenkins configuration page.   
-
-  * Add your channel id as `instavote-cd` and save the configuration.
-  ![](./images/jenkinsfile7.png)
-
-
-  * From the browser's slack configuration page,  click on save the configuration atleast onec, to enable the notification.
-
-  * Now from your Jenkins, choose any job and go to the configuration page.  Add `slack notification` as the post build action. Save  and build the job. Voila !  Now you could see the notifications right into  your slack channel.
-
-
-### Sending notifications from a pipeline job
-
-You could add slack notifications to any pipeline job with slackSend directives. You would have to set up the intgration as desribed above before you attempt this.
-
-Following is a code snipped, which demonstrates how to achieve this.
-
-`file: worker/Jenkinsfile`
-
-```
-pipeline {
-  agent any
-
-  tools{
-    maven 'Maven 3.6.2'
-
-  }
-
-  stages{
-      stage(build){
-        when{
-            changeset "**/worker/**"
-          }
-
-        steps{
-          echo 'Compiling worker app..'
-          dir('worker'){
-            sh 'mvn compile'
-          }
-        }
-      }
-      stage(test){
-        when{
-          changeset "**/worker/**"
-        }
-        steps{
-          echo 'Running Unit Tets on worker app..'
-          dir('worker'){
-            sh 'mvn clean test'
-           }
-
-          }
-      }
-      stage(package){
-        when{
-          branch 'master'
-          changeset "**/worker/**"
-        }
-        steps{
-          echo 'Packaging worker app'
-          dir('worker'){
-            sh 'mvn package -DskipTests'
-            archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-          }
-
-        }
-      }
-  }
-
-  post{
-    always{
-        echo 'Building multibranch pipeline for worker is completed..'
-    }
-    failiure{
-      slackSend (channel: "instavote-cd", message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-    }
-    success{
-      slackSend (channel: "instavote-cd", message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-    }
-  }
-}
-```
-Once you make changes in Jenkinsfile, commit and push to `feature/workerpipe` branch.
-```
-git status
-git add worker/Jenkisfile
-git commit -am "add slack notifications"
-git push origin feature/workerpipe
-```
-After push the changes to branch, the pipeline will build automatically and send notification to slack. From slack you will get link to visit the build status of your job.
-
-Since this  feature is complete, it is time to merge it all into the master and delete this feature branch.  You could raise a pull request, get it reviewed, observe the CI feedback right onto the pull request page, before you merge it to the master. Once merged, dont forget to delete the branch from remote repo  as well as from the local workspace.
-
 
 ## Assignment: Writing  Jenkinsfile for result app
 
-You have been tasked to write declarative pipeline for result application.
+You have been tasked to write declarative pipeline for **result**, a nodeJS application.
 
-  * Two stages, build and test
-  * Stages should run conditinoally only when there is a change to **result** subdir
+  *  Install NodeJS plugin and configure 'NodeJS 8.9.0' from **Global Tools**.
+  *  Add two stages, build (npm install) and test (npm test)
+  * Stages should run conditionally only when there is a change to **result** subdir
   * You could refer the  workflow following
 
 ![](./images/jenkinsfile8.png)
 
 
-[You could reference this page to observer the solution.](../jenkinsfile/solutions.md)
+[You could reference this page to observer the solution.](./solutions/jenkinsfile-nodejs.md)
